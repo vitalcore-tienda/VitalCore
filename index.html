@@ -244,6 +244,7 @@
                     <button onclick="filterProducts('all')" class="filter-btn active whitespace-nowrap bg-brand-dark text-white px-5 py-2 rounded-full font-semibold text-sm shadow-md hover:bg-gray-800 transition-all flex-shrink-0">Todos</button>
                     <button onclick="filterProducts('Star Nutrition')" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Star Nutrition</button>
                     <button onclick="filterProducts('Ena')" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Ena Sport</button>
+                    <button onclick="filterProducts('Gold Nutrition')" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Gold Nutrition</button>
                 </div>
             </div>
             <!-- Grid -->
@@ -391,7 +392,11 @@
             { id: 3, brand: "Star Nutrition", name: "Whey Protein 2lb Doy Pack", price: null, description: "La calidad Platinum en formato refill. Misma potencia muscular, a un precio más inteligente y conveniente.", category: "Proteínas" },
             { id: 4, brand: "Star Nutrition", name: "Creatina Monohidratada 300g", price: null, description: "Micronizada y 100% pura. Llevá tu fuerza, resistencia y potencia explosiva al siguiente nivel.", category: "Creatinas" },
             { id: 6, brand: "Star Nutrition", name: "Ami.Esenciales (EAA)", price: null, description: "Perfil completo de los 9 aminoácidos esenciales. Bloquea el desgaste muscular y acelera tu regeneración al máximo.", category: "Aminoácidos" },
-            { id: 20, brand: "Star Nutrition", name: "Creatina Doy pack 300g", price: null, description: "Formato refill económico. La misma creatina micronizada de siempre, 100% pura.", category: "Creatinas" }
+            { id: 20, brand: "Star Nutrition", name: "Creatina Doy pack 300g", price: null, description: "Formato refill económico. La misma creatina micronizada de siempre, 100% pura.", category: "Creatinas" },
+            // NUEVAS TARJETAS AGREGADAS
+            { id: 7, brand: "Star Nutrition", name: "Pump 3D Pre-Entreno", price: null, description: "Energía explosiva, resistencia extrema y máxima concentración para superar tus límites en cada sesión.", category: "Pre-Entrenos" },
+            { id: 8, brand: "Ena", name: "Protein Bar Crunch", price: null, description: "El snack proteico perfecto. Práctico, delicioso y cargado de proteínas para tu recuperación muscular.", category: "Snacks" },
+            { id: 9, brand: "Gold Nutrition", name: "Proteína Doypack Gold Nutrition", price: null, description: "Proteína de alta calidad en formato Doypack. Ideal para una rápida recuperación y desarrollo muscular.", category: "Proteínas" }
         ];
 
         // --- FUNCIÓN DE FORMATEO DE PRECIO ---
@@ -429,11 +434,6 @@
 
         window.renderProducts = function(filter = 'all') {
             grid.innerHTML = ''; 
-
-            if (filter === 'Ena') {
-                grid.innerHTML = `<div class="col-span-full flex justify-center items-center py-16" data-aos="fade-in"><div class="text-center"><i class="fa-solid fa-boxes-stacked text-4xl text-brand-primary mb-4"></i><h3 class="text-2xl font-display font-bold text-gray-800">Próximamente se publicará el stock disponible.</h3></div></div>`;
-                return; 
-            }
 
             const filtered = filter === 'all' ? products : products.filter(p => p.brand === filter);
 

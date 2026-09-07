@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VITALCORE - Suplementos Deportivos</title>
+    
+    <!-- METADATOS PARA REDES SOCIALES (SEO & Open Graph) -->
+    <meta name="description" content="Tienda online de suplementos deportivos. Distribuidores oficiales de Star Nutrition, Ena Sport y Gold Nutrition. Encontrá proteínas, creatinas y aminoácidos al mejor precio.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="VITALCORE - Suplementos Deportivos">
+    <meta property="og:description" content="Potencia tu entrenamiento con suplementos de alta calidad. Proteínas, creatinas y más. Asesoramiento sin cargo y los mejores precios del mercado.">
+    <meta property="og:image" content="logo.jpg">
+    <meta property="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="logo.jpg" type="image/jpg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AOS Animation Library CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#1A4E40',    
+                            primary: '#5CAB7D', 
+                            accent: '#8BC34A',  
+                            light: '#F1F8E0',   
+                            sky: '#D1F2F9'      
+                        },
+                        slate: {
+                            50: '#F1F8E0',      
+                            800: '#212121',     
+                            900: '#1A4E40'      
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    },
+                    animation: {
+                        marquee: 'marquee 20s linear infinite',
+                        'marquee-mobile': 'marquee 10s linear infinite',
+                        'pulse-subtle': 'pulseSubtle 2s infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        pulseSubtle: {
+                            '0%, 100%': { boxShadow: '0 0 0 0 rgba(37, 211, 102, 0.6)' },
+                            '70%': { boxShadow: '0 0 0 15px rgba(37, 211, 102, 0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to bottom, #D1F2F9, #F1F8E0);
+            color: #212121;
+            overflow-x: hidden; 
+        }
+        
+        .font-display {
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .btn-energy {
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 rgba(92, 171, 125, 0);
+        }
+        
+        .btn-energy:hover {
+            box-shadow: 0 0 20px rgba(139, 195, 74, 0.6), 0 0 40px rgba(139, 195, 74, 0.3);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 130px; 
+        }
+        
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .menu-hidden {
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .menu-visible {
+            max-height: 400px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* --- CARD FLIP 3D STYLES --- */
+        .card-container {
+            perspective: 1000px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+        @media (min-width: 1024px) {
+            .card-container:hover .card-inner.hover-flip {
+                transform: rotateY(180deg);
+            }
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Admin & Drawer Overlay */
+        .admin-modal-bg, .cart-overlay {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-brand-dark/95 backdrop-blur-md text-white shadow-lg sticky top-0 z-40 transition-all duration-300 flex flex-col">
+        <!-- Ticker Promocional -->
+        <div class="bg-brand-accent text-brand-dark overflow-hidden py-1 relative z-40 border-b border-brand-dark/10">
+            <div class="flex animate-marquee-mobile md:animate-marquee whitespace-nowrap">
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-check-circle mr-1"></i> Asesoramiento Deportivo sin Cargo</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i> Mejores Precios Garantizados</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-truck-fast mr-1"></i> Envíos Rápidos a Todo el País</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-check-circle mr-1"></i> Asesoramiento Deportivo sin Cargo</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i> Mejores Precios Garantizados</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-truck-fast mr-1"></i> Envíos Rápidos a Todo el País</span>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 md:px-6 py-3 flex justify-between items-center w-full">
+            <!-- LOGO -->
+            <a href="#" class="text-xl md:text-2xl font-display font-bold tracking-wider text-brand-primary flex items-center gap-3 z-40 relative">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white border-2 border-brand-primary overflow-hidden flex-shrink-0">
+                    <img src="logo.jpg" alt="Logo VitalCore" width="48" height="48" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.classList.add('flex', 'items-center', 'justify-center'); this.parentElement.innerHTML='<i class=\'fa-solid fa-bolt text-brand-dark\'></i>'">
+                </div>
+                <div>VITAL<span class="text-white">CORE</span></div>
+            </a>
+            
+            <!-- Menu Desktop -->
+            <div class="hidden md:flex space-x-8 font-semibold text-sm uppercase tracking-wide items-center">
+                <a href="#inicio" class="hover:text-brand-primary transition-colors py-2">Inicio</a>
+                <a href="#catalogo" class="hover:text-brand-primary transition-colors py-2">Catálogo</a>
+                <a href="#beneficios" class="hover:text-brand-primary transition-colors py-2">Beneficios</a>
+                <a href="#contacto" class="hover:text-brand-primary transition-colors py-2">Contacto</a>
+            </div>
+
+            <!-- Botones de Acción (Carrito y Menú Móvil) -->
+            <div class="flex items-center gap-3">
+                <button id="cart-open-btn" onclick="toggleCart()" aria-label="Abrir carrito de compras" aria-controls="cart-drawer" aria-expanded="false" class="relative bg-brand-primary/20 hover:bg-brand-primary text-brand-primary hover:text-brand-dark p-2.5 rounded-full transition-all duration-300 flex items-center justify-center">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-500 text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all scale-0">0</span>
+                </button>
+
+                <!-- Botón Menú Móvil -->
+                <button id="menu-toggle-btn" onclick="toggleMenu()" class="md:hidden text-2xl text-brand-primary focus:outline-none p-2" aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false">
+                    <i id="menu-icon" class="fa-solid fa-bars transition-transform duration-300"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Movil -->
+        <div id="mobile-menu" aria-hidden="true" inert class="md:hidden bg-brand-dark border-t border-brand-primary/20 absolute w-full left-0 top-full shadow-2xl menu-hidden overflow-hidden z-40">
+            <div class="flex flex-col p-6 space-y-4 font-semibold text-center uppercase tracking-wide">
+                <a href="#inicio" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-brand-primary transition-colors">Inicio</a>
+                <a href="#catalogo" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Catálogo</a>
+                <a href="#beneficios" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Beneficios</a>
+                <a href="#contacto" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="inicio" class="relative bg-brand-dark text-white overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-fixed bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1770&auto=format&fit=crop');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-dark/50 via-brand-dark/80 to-brand-dark"></div>
+        
+        <div class="container mx-auto px-4 md:px-6 py-20 md:py-32 relative z-10 flex flex-col items-center justify-center text-center">
+            <div class="w-full max-w-4xl" data-aos="fade-up" data-aos-duration="1000">
+                <span class="text-brand-primary font-bold tracking-widest uppercase mb-4 block text-sm md:text-base">Potencia tu entrenamiento</span>
+                <h1 class="text-5xl md:text-7xl font-display font-bold leading-tight mb-6 md:mb-8">
+                    ALCANZA TU <br class="hidden md:block">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-accent">MEJOR VERSIÓN</span>
+                </h1>
+                <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
+                    Suplementación deportiva de alta calidad. Distribuidores oficiales de Star Nutrition, Ena Sport y Gold Nutrition.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#catalogo" class="btn-energy w-full sm:w-auto bg-brand-primary text-brand-dark font-bold py-4 px-10 rounded-full transition-all text-center text-lg">Ver Catálogo</a>
+                    <a href="#contacto" class="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-brand-dark font-bold py-4 px-10 rounded-full transition-all text-center text-lg">Consultar</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Catálogo de Productos con Efecto Card Flip 3D -->
+    <section id="catalogo" class="py-12 md:py-20 bg-slate-50">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-8 md:mb-12" data-aos="fade-in">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-brand-dark mb-3">NUESTROS <span class="text-brand-primary">PRODUCTOS</span></h2>
+                <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto px-4">Seleccioná tus suplementos e irás acumulando tu pedido en el carrito de compras.</p>
+                
+                <div class="mt-6 flex overflow-x-auto pb-4 md:pb-0 px-2 md:justify-center gap-3 no-scrollbar" id="filters">
+                    <button onclick="filterProducts('all')" aria-pressed="true" class="filter-btn active whitespace-nowrap bg-brand-dark text-white px-5 py-2 rounded-full font-semibold text-sm shadow-md hover:bg-gray-800 transition-all flex-shrink-0">Todos</button>
+                    <button onclick="filterProducts('Star Nutrition')" aria-pressed="false" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Star Nutrition</button>
+                    <button onclick="filterProducts('Ena')" aria-pressed="false" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Ena Sport</button>
+                    <button onclick="filterProducts('Gold Nutrition')" aria-pressed="false" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Gold Nutrition</button>
+                </div>
+            </div>
+
+            <!-- Grid de Productos -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 min-h-[350px]">
+                <div class="col-span-full flex justify-center items-center py-10">
+                    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-primary"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beneficios -->
+    <section id="beneficios" class="py-12 md:py-16 bg-white">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 text-center">
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-certificate"></i></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Calidad Garantizada</h3>
+                    <p class="text-sm md:text-base text-gray-600">Productos originales y certificados directos de los distribuidores oficiales.</p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white" data-aos="fade-up" data-aos-delay="150">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-truck-fast"></i></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Envíos Rápidos</h3>
+                    <p class="text-sm md:text-base text-gray-600">Despachamos tu pedido rápidamente para que no frenes tu ritmo de entrenamiento.</p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-tag"></i></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Mejores Precios</h3>
+                    <p class="text-sm md:text-base text-gray-600">Precios competitivos y ofertas exclusivas en suplementación de primera línea.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Asesoramiento -->
+    <section class="py-12 md:py-16 bg-brand-primary relative overflow-hidden" data-aos="fade-up">
+        <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white opacity-10 rounded-full pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-brand-dark opacity-10 rounded-full pointer-events-none"></div>
+        <div class="container mx-auto px-4 md:px-6 text-center relative z-10">
+            <h2 class="text-2xl md:text-4xl font-display font-bold text-brand-dark mb-3">¿NECESITÁS ASESORAMIENTO PERSONALIZADO?</h2>
+            <p class="text-brand-dark/80 text-base md:text-lg mb-8 font-medium px-4">¿No sabés qué suplemento elegir según tus objetivos? Te ayudamos sin cargo.</p>
+            <a href="https://wa.me/5491165846235?text=Hola!%20Visité%20la%20página%20web%20de%20VitalCore%20y%20quisiera%20asesoramiento%20personalizado." target="_blank" rel="noopener noreferrer" class="btn-energy w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-brand-dark text-white font-bold py-4 md:py-3 px-8 rounded-full transition-all">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Hablar con un Asesor
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="bg-brand-dark text-white py-10 md:py-12 border-t border-brand-primary/20 pb-24 md:pb-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6">
+                <div>
+                    <a href="#" class="text-2xl font-display font-bold tracking-wider text-brand-primary block mb-2 flex items-center justify-center md:justify-start gap-2">VITAL<span class="text-white">CORE</span></a>
+                    <p class="text-gray-400 text-sm">Tu tienda de confianza en suplementación deportiva.</p>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="https://www.instagram.com/_vitalcore?igsh=cXpwZjZqeGVmY3hy" target="_blank" rel="noopener noreferrer" aria-label="Instagram VitalCore" class="text-gray-400 hover:text-brand-primary transition-colors text-2xl"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://wa.me/5491165846235" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp VitalCore" class="text-gray-400 hover:text-brand-primary transition-colors text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-xs md:text-sm">
+                <span id="secret-trigger" onclick="openAdminModal()" class="cursor-pointer select-none hover:text-gray-300 transition-colors">
+                    &copy; 2026 VitalCore. Todos los derechos reservados.
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DRAWER DEL CARRITO DE COMPRAS -->
+    <div id="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true" class="fixed inset-0 z-50 hidden transition-all duration-300">
+        <div class="cart-overlay absolute inset-0" aria-hidden="true" onclick="toggleCart(false)"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col justify-between transform transition-transform duration-300 z-50">
+            <!-- Header del Carrito -->
+            <div class="bg-brand-dark text-white p-5 flex justify-between items-center border-b border-brand-primary/20">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-cart-shopping text-xl text-brand-primary"></i>
+                    <h3 id="cart-title" class="text-xl font-bold font-display">Tu Carrito de Compras</h3>
+                </div>
+                <button id="cart-close-btn" onclick="toggleCart(false)" class="text-gray-300 hover:text-white p-2 rounded-full transition-colors" aria-label="Cerrar carrito">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Lista de Productos -->
+            <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50">
+                <div class="text-center py-12 text-gray-400 flex flex-col items-center gap-3">
+                    <i class="fa-solid fa-basket-shopping text-5xl text-gray-300"></i>
+                    <p class="font-medium text-sm">Tu carrito está vacío</p>
+                </div>
+            </div>
+
+            <!-- Footer con Totales y Checkout -->
+            <div class="p-5 bg-white border-t border-gray-200 space-y-4">
+                <div class="flex justify-between items-center text-lg font-bold text-gray-800">
+                    <span>Total Estimado:</span>
+                    <span id="cart-total" class="font-display text-2xl text-brand-dark">$0</span>
+                </div>
+                <button id="checkout-btn" onclick="checkoutOrder()" disabled class="w-full bg-[#25D366] hover:bg-[#1EBE57] disabled:bg-gray-300 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm uppercase tracking-wide">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Finalizar Pedido por WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <div class="fixed bottom-6 right-4 md:right-6 z-30 flex items-center group">
+        <span class="hidden md:inline-block mr-3 bg-brand-dark text-white text-xs font-bold py-2 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+            ¿Consultas rápidas? ¡Escribinos! 💬
+        </span>
+        <a href="https://wa.me/5491165846235?text=Hola!%20Visité%20la%20página%20web%20de%20VitalCore%20y%20quisiera%20consultar%20por%20sus%20productos." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           aria-label="Contactar por WhatsApp"
+           class="bg-[#25D366] text-white rounded-full p-0 shadow-2xl hover:bg-[#1EBE57] transition-all duration-300 animate-pulse-subtle flex items-center justify-center w-14 h-14 md:w-16 md:h-16 transform hover:scale-110">
+            <i class="fa-brands fa-whatsapp text-3xl md:text-4xl"></i>
+        </a>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" role="status" aria-live="polite" aria-atomic="true" class="fixed top-20 left-1/2 transform -translate-x-1/2 md:top-auto md:bottom-24 md:left-auto md:right-6 md:translate-x-0 w-[90%] md:w-auto bg-brand-dark text-white px-6 py-4 rounded-lg shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-3 border border-brand-primary/20">
+        <i class="fa-solid fa-circle-check text-brand-primary text-xl"></i>
+        <span id="toast-text" class="text-sm font-medium">¡Producto agregado al carrito!</span>
+    </div>
+
+    <!-- ADMIN MODAL -->
+    <div id="admin-modal" role="dialog" aria-modal="true" aria-labelledby="admin-login-title" aria-hidden="true" class="fixed inset-0 admin-modal-bg z-50 hidden flex items-center justify-center p-4">
+        <!-- LOGIN -->
+        <div id="admin-login" class="bg-white rounded-xl shadow-2xl w-full max-w-md p-8 transform transition-all">
+            <div class="text-center mb-6">
+                <i class="fa-solid fa-user-shield text-4xl text-brand-dark mb-2"></i>
+                <h2 id="admin-login-title" class="text-2xl font-bold text-brand-dark font-display">Acceso Administrativo</h2>
+                <p class="text-gray-500 text-sm">Ingrese contraseña para continuar</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label for="admin-password" class="sr-only">Contraseña administrativa</label>
+                    <input type="password" id="admin-password" placeholder="Contraseña" autocomplete="current-password" aria-describedby="login-error" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition-all" onkeypress="handleEnter(event)">
+                    <p id="login-error" role="alert" class="text-red-500 text-xs mt-2 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> Contraseña incorrecta</p>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="closeAdmin()" class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors">Cancelar</button>
+                    <button onclick="checkAdmin()" class="flex-1 px-4 py-3 bg-brand-dark text-white font-bold rounded-lg hover:bg-brand-primary transition-colors">Entrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="admin-dashboard" class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col hidden overflow-hidden">
+            <div class="bg-brand-dark text-white p-5 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-chart-line text-xl text-brand-primary"></i>
+                    <h2 id="admin-dashboard-title" class="text-xl font-bold font-display">Panel de Control & Estadísticas</h2>
+                </div>
+                <button onclick="closeAdmin()" aria-label="Cerrar panel administrativo" class="text-gray-300 hover:text-white hover:bg-white/10 p-2 rounded-full transition-all w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <!-- Tabs del Admin -->
+            <div role="tablist" aria-label="Secciones del panel administrativo" class="flex border-b border-gray-200 bg-gray-100">
+                <button id="tab-btn-prices" role="tab" aria-selected="true" aria-controls="tab-content-prices" onclick="switchAdminTab('prices')" class="flex-1 py-3 px-4 font-bold text-sm text-brand-dark border-b-2 border-brand-primary bg-white flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-pen-to-square"></i> Precios
+                </button>
+                <button id="tab-btn-stats" role="tab" aria-selected="false" aria-controls="tab-content-stats" onclick="switchAdminTab('stats')" class="flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-fire text-orange-500"></i> Productos Más Pedidos
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 bg-slate-50">
+                <!-- TAB PRECIOS -->
+                <div id="tab-content-prices" role="tabpanel" aria-labelledby="tab-btn-prices" class="grid gap-4"></div>
+
+                <!-- TAB ESTADÍSTICAS -->
+                <div id="tab-content-stats" role="tabpanel" aria-labelledby="tab-btn-stats" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 class="text-lg font-bold text-brand-dark font-display mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-amber-500"></i> Ranking de Demanda por Clientes
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-6">Muestra la cantidad acumulada de unidades incluidas en pedidos iniciados por WhatsApp.</p>
+                        
+                        <div id="stats-ranking-list" class="space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-gray-200 bg-white flex justify-between items-center text-xs text-gray-500">
+                <span id="firestore-status" role="status" class="flex items-center gap-1 text-amber-600 font-semibold"><i class="fa-solid fa-spinner fa-spin"></i> Conectando con Firestore...</span>
+                <button onclick="closeAdmin()" class="px-6 py-2 bg-brand-dark text-white rounded-lg font-bold hover:bg-brand-primary transition-colors">Finalizar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIBRERÍAS EXTERNAS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, onSnapshot, increment, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Configuración Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBelpHAhAcmqFpCcfrSwn027HOt1x4D_kQ",
+            authDomain: "vitalcore-7db63.firebaseapp.com",
+            projectId: "vitalcore-7db63",
+            storageBucket: "vitalcore-7db63.firebasestorage.app",
+            messagingSenderId: "114574548383",
+            appId: "1:114574548383:web:f1c62e20311c35c01571aa"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- DATOS ESTÁTICOS DE PRODUCTOS ---
+        let products = [
+            { id: 1, brand: "Star Nutrition", name: "Nitro Whey", price: null, ordersCount: 0, description: "Blend de máxima pureza y rápida absorción. La fórmula definitiva para potenciar tu recuperación y crecimiento magro.", category: "Proteínas" },
+            { id: 2, brand: "Star Nutrition", name: "Whey Protein Platinum 2lb", price: null, ordersCount: 0, description: "Concentrado de suero 100% premium. Rica en BCAAs para un desarrollo muscular sólido y un sabor increíble.", category: "Proteínas" },
+            { id: 3, brand: "Star Nutrition", name: "Whey Protein 2lb Doy Pack", price: null, ordersCount: 0, description: "La calidad Platinum en formato refill. Misma potencia muscular, a un precio más inteligente y conveniente.", category: "Proteínas" },
+            { id: 4, brand: "Star Nutrition", name: "Creatina Monohidratada 300g", price: null, ordersCount: 0, description: "Micronizada y 100% pura. Llevá tu fuerza, resistencia y potencia explosiva al siguiente nivel.", category: "Creatinas" },
+            { id: 6, brand: "Star Nutrition", name: "Ami.Esenciales (EAA)", price: null, ordersCount: 0, description: "Perfil completo de los 9 aminoácidos esenciales. Bloquea el desgaste muscular y acelera tu regeneración al máximo.", category: "Aminoácidos" },
+            { id: 20, brand: "Star Nutrition", name: "Creatina Doy pack 300g", price: null, ordersCount: 0, description: "Formato refill económico. La misma creatina micronizada de siempre, 100% pura.", category: "Creatinas" },
+            { id: 7, brand: "Star Nutrition", name: "Pump 3D Pre-Entreno", price: null, ordersCount: 0, description: "Energía explosiva, resistencia extrema y máxima concentración para superar tus límites en cada sesión.", category: "Pre-Entrenos" },
+            { id: 8, brand: "Ena", name: "Protein Bar Crunch", price: null, ordersCount: 0, description: "El snack proteico perfecto. Práctico, delicioso y cargado de proteínas para tu recuperación muscular.", category: "Snacks" },
+            { id: 9, brand: "Gold Nutrition", name: "Proteína Doypack Gold Nutrition", price: null, ordersCount: 0, description: "Proteína de alta calidad en formato Doypack. Ideal para una rápida recuperación y desarrollo muscular.", category: "Proteínas" },
+            { id: 10, brand: "Ena", name: "Hydroxy Max Night x 120 tabs", price: null, ordersCount: 0, description: "Quemador de grasas nocturno sin estimulantes. Optimiza el metabolismo mientras favorece un descanso profundo.", category: "Quemadores" },
+            { id: 11, brand: "Star Nutrition", name: "Magnesio", price: null, ordersCount: 0, description: "Suplemento esencial para la óptima recuperación muscular, prevención de calambres y mejora del rendimiento físico.", category: "Minerales" },
+            { id: 12, brand: "Ena", name: "Magnesio", price: null, ordersCount: 0, description: "Magnesio de alta absorción. Ayuda a reducir la fatiga, mejora la contracción muscular y equilibra los electrolitos.", category: "Minerales" },
+            { id: 13, brand: "Ena", name: "Caja Iron Bar x 12 unid.", price: null, ordersCount: 0, description: "Caja cerrada de barras hiperproteicas. Excelente sabor y el mejor aporte nutricional para tus colaciones.", category: "Snacks" },
+            { id: 14, brand: "Star Nutrition", name: "Cafeína 200mg", price: null, ordersCount: 0, description: "Energía pura en cápsulas. Ideal para mejorar la concentración, aumentar el estado de alerta y potenciar tus entrenamientos.", category: "Energizantes" },
+            { id: 15, brand: "Ena", name: "Caffeine 200", price: null, ordersCount: 0, description: "Máxima pureza para un impulso de energía inmediato. Reduce la fatiga y optimiza tu rendimiento físico y mental.", category: "Energizantes" }
+        ];
+
+        // Estado del Carrito de Compras
+        const CART_STORAGE_KEY = 'vitalcore-cart-v1';
+
+        const loadCart = () => {
+            try {
+                const storedCart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+                if (!Array.isArray(storedCart)) return [];
+
+                const validIds = new Set(products.map(product => product.id));
+                const quantities = new Map();
+
+                storedCart.forEach(item => {
+                    const id = Number(item?.id);
+                    const quantity = Number(item?.quantity);
+                    if (!validIds.has(id) || !Number.isInteger(quantity) || quantity <= 0) return;
+                    quantities.set(id, Math.min((quantities.get(id) || 0) + quantity, 99));
+                });
+
+                return [...quantities].map(([id, quantity]) => ({ id, quantity }));
+            } catch (error) {
+                console.warn('No se pudo recuperar el carrito guardado:', error);
+                return [];
+            }
+        };
+
+        const persistCart = () => {
+            try {
+                localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+            } catch (error) {
+                console.warn('No se pudo guardar el carrito:', error);
+            }
+        };
+
+        let cart = loadCart();
+        let isCheckingOut = false;
+
+        const getDetailedCart = () => cart
+            .map(cartItem => {
+                const product = products.find(p => p.id === cartItem.id);
+                return product ? { ...product, quantity: cartItem.quantity } : null;
+            })
+            .filter(Boolean);
+
+        // --- FORMATEO DE PRECIOS ---
+        const parsePriceNumber = (price) => {
+            if (price === null || price === undefined || price === '') return null;
+
+            const cleanPrice = price.toString().trim().replace(/[$.\s]/g, '');
+            if (!/^\d+$/.test(cleanPrice)) return null;
+
+            const number = Number(cleanPrice);
+            return Number.isSafeInteger(number) && number > 0 ? number : null;
+        };
+
+        const hasValidPrice = (price) => parsePriceNumber(price) !== null;
+
+        const formatPrice = (price) => {
+            const number = parsePriceNumber(price);
+            return number === null ? 'Sin precio' : number.toLocaleString('es-AR');
+        };
+
+        function setFirestoreStatus(status) {
+            const statusElement = document.getElementById('firestore-status');
+            if (!statusElement) return;
+
+            const states = {
+                connected: {
+                    className: 'flex items-center gap-1 text-green-600 font-semibold',
+                    content: '<i class="fa-solid fa-wifi"></i> Conectado a Firestore'
+                },
+                error: {
+                    className: 'flex items-center gap-1 text-red-600 font-semibold',
+                    content: '<i class="fa-solid fa-triangle-exclamation"></i> Sin conexión con Firestore'
+                }
+            };
+
+            const state = states[status];
+            if (!state) return;
+            statusElement.className = state.className;
+            statusElement.innerHTML = state.content;
+        }
+
+        // --- SINCRONIZACIÓN FIREBASE EN TIEMPO REAL ---
+        onSnapshot(collection(db, "products"), (snapshot) => {
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const localProduct = products.find(p => p.id.toString() === docSnap.id);
+                if (localProduct) {
+                    if (data.price !== undefined) localProduct.price = data.price;
+                    if (data.ordersCount !== undefined) localProduct.ordersCount = data.ordersCount;
+                }
+            });
+
+            renderProducts();
+            updateCartUI();
+            setFirestoreStatus('connected');
+            
+            if (!document.getElementById('admin-modal').classList.contains('hidden')) {
+                renderAdminProducts();
+                renderStatsRanking();
+            }
+        }, (error) => {
+            console.error('Error al sincronizar productos con Firestore:', error);
+            setFirestoreStatus('error');
+            showToast('No pudimos actualizar los productos. Revisá tu conexión e intentá nuevamente.');
+        });
+
+        // --- CARRITO DE COMPRAS ---
+        let cartReturnFocus = null;
+        let adminReturnFocus = null;
+
+        function updateBodyScroll() {
+            const cartOpen = !document.getElementById('cart-drawer').classList.contains('hidden');
+            const adminOpen = !document.getElementById('admin-modal').classList.contains('hidden');
+            document.body.classList.toggle('overflow-hidden', cartOpen || adminOpen);
+        }
+
+        window.toggleCart = function(forceOpen) {
+            const drawer = document.getElementById('cart-drawer');
+            const openButton = document.getElementById('cart-open-btn');
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : drawer.classList.contains('hidden');
+
+            drawer.classList.toggle('hidden', !shouldOpen);
+            drawer.setAttribute('aria-hidden', String(!shouldOpen));
+            openButton.setAttribute('aria-expanded', String(shouldOpen));
+            updateBodyScroll();
+
+            if (shouldOpen) {
+                cartReturnFocus = document.activeElement;
+                requestAnimationFrame(() => document.getElementById('cart-close-btn').focus());
+            } else if (cartReturnFocus instanceof HTMLElement) {
+                cartReturnFocus.focus();
+                cartReturnFocus = null;
+            }
+        };
+
+        window.addToCart = function(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || !hasValidPrice(product.price)) {
+                showToast('Este producto todavía no tiene un precio válido.');
+                return;
+            }
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id: product.id, quantity: 1 });
+            }
+
+            persistCart();
+            updateCartUI();
+            showToast(`¡${product.name} agregado al carrito!`);
+        };
+
+        window.updateCartQuantity = function(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            persistCart();
+            updateCartUI();
+        };
+
+        window.removeFromCart = function(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            persistCart();
+            updateCartUI();
+        };
+
+        function updateCartUI() {
+            const itemsContainer = document.getElementById('cart-items');
+            const badge = document.getElementById('cart-badge');
+            const totalElement = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const detailedCart = getDetailedCart();
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            // Badge del navbar
+            if (totalItems > 0) {
+                badge.innerText = totalItems;
+                badge.classList.remove('scale-0');
+            } else {
+                badge.classList.add('scale-0');
+            }
+
+            // Renderizado items
+            if (detailedCart.length === 0) {
+                itemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-400 flex flex-col items-center gap-3">
+                        <i class="fa-solid fa-basket-shopping text-5xl text-gray-300"></i>
+                        <p class="font-medium text-sm">Tu carrito está vacío</p>
+                    </div>
+                `;
+                totalElement.innerText = '$0';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            checkoutBtn.disabled = isCheckingOut || detailedCart.some(item => !hasValidPrice(item.price));
+            let totalPrice = 0;
+            itemsContainer.innerHTML = '';
+
+            detailedCart.forEach(item => {
+                const itemPriceNum = parsePriceNumber(item.price) ?? 0;
+                const subtotal = itemPriceNum * item.quantity;
+                totalPrice += subtotal;
+                const itemPriceDisplay = hasValidPrice(item.price)
+                    ? `$${formatPrice(item.price)}`
+                    : 'Sin precio';
+
+                const itemRow = document.createElement('div');
+                itemRow.className = 'bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between gap-3';
+                itemRow.innerHTML = `
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
+                        <img src="tarjeta${item.id}.1.jpg" alt="${item.name}" onerror="this.src='https://placehold.co/100'" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <h4 class="font-bold text-gray-800 text-xs truncate">${item.name}</h4>
+                        <p class="text-[11px] text-brand-dark font-semibold">${itemPriceDisplay}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                            <button onclick="updateCartQuantity(${item.id}, -1)" aria-label="Reducir cantidad de ${item.name}" class="px-2 py-1 text-gray-600 hover:bg-gray-200 text-xs font-bold">-</button>
+                            <span class="px-2 text-xs font-bold text-gray-800">${item.quantity}</span>
+                            <button onclick="updateCartQuantity(${item.id}, 1)" aria-label="Aumentar cantidad de ${item.name}" class="px-2 py-1 text-gray-600 hover:bg-gray-200 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" aria-label="Eliminar ${item.name} del carrito" class="text-red-400 hover:text-red-600 p-1 text-xs" title="Eliminar">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                itemsContainer.appendChild(itemRow);
+            });
+
+            totalElement.innerText = `$${formatPrice(totalPrice)}`;
+        }
+
+        window.checkoutOrder = async function() {
+            if (isCheckingOut) return;
+
+            const orderItems = getDetailedCart();
+            if (orderItems.length === 0) return;
+            if (orderItems.some(item => !hasValidPrice(item.price))) {
+                showToast('Hay productos sin un precio válido en el carrito.');
+                return;
+            }
+
+            // 1. Construir el mensaje antes de realizar cualquier operación asíncrona
+            const phone = "5491165846235";
+            let message = "Hola VitalCore! 👋 Quisiera realizar el siguiente pedido:\n\n";
+
+            let grandTotal = 0;
+            orderItems.forEach((item, index) => {
+                const subtotal = parsePriceNumber(item.price) * item.quantity;
+                grandTotal += subtotal;
+                message += `${index + 1}. *${item.name}* (${item.brand})\n   Cantidad: ${item.quantity} x $${formatPrice(item.price)} = *$${formatPrice(subtotal)}*\n`;
+            });
+
+            message += `\n💰 *TOTAL ESTIMADO: $${formatPrice(grandTotal)}*\n\n¿Tienen stock disponible para coordinar la entrega?`;
+
+            // 2. Abrir WhatsApp directamente desde el clic para evitar bloqueadores
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const originalContent = checkoutBtn.innerHTML;
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+            isCheckingOut = true;
+            checkoutBtn.disabled = true;
+            checkoutBtn.setAttribute('aria-busy', 'true');
+            checkoutBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xl"></i> Abriendo WhatsApp...';
+
+            let whatsappWindow = null;
+            try {
+                whatsappWindow = window.open(whatsappUrl, '_blank');
+                if (whatsappWindow) whatsappWindow.opener = null;
+            } catch (error) {
+                console.error('No se pudo abrir WhatsApp:', error);
+            }
+
+            if (!whatsappWindow) {
+                isCheckingOut = false;
+                checkoutBtn.removeAttribute('aria-busy');
+                checkoutBtn.innerHTML = originalContent;
+                updateCartUI();
+                showToast('No se pudo abrir WhatsApp. Habilitá las ventanas emergentes e intentá nuevamente.');
+                return;
+            }
+
+            showToast('¡Pedido abierto en WhatsApp! Revisalo antes de enviarlo.');
+
+            // 3. Registrar la intención de pedido una sola vez y en una escritura atómica
+            try {
+                const batch = writeBatch(db);
+                orderItems.forEach(item => {
+                    batch.set(doc(db, "products", item.id.toString()), {
+                        ordersCount: increment(item.quantity)
+                    }, { merge: true });
+                });
+                await batch.commit();
+            } catch (error) {
+                console.error("Error al registrar estadísticas:", error);
+            } finally {
+                isCheckingOut = false;
+                checkoutBtn.removeAttribute('aria-busy');
+                checkoutBtn.innerHTML = originalContent;
+                updateCartUI();
+            }
+        };
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerText = msg;
+            toast.style.opacity = '1';
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // --- RENDERIZADO DE TARJETAS CARD FLIP 3D ---
+        const grid = document.getElementById('product-grid');
+
+        window.renderProducts = function(filter = 'all') {
+            grid.innerHTML = ''; 
+
+            const filtered = filter === 'all' ? products : products.filter(p => p.brand === filter);
+
+            if (filtered.length === 0) {
+                 grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">No hay productos disponibles en esta categoría.</p>`;
+                 return;
+            }
+
+            filtered.forEach((product, index) => {
+                const cardContainer = document.createElement('div');
+                cardContainer.className = 'card-container h-[460px] w-full';
+                cardContainer.setAttribute('data-aos', 'fade-up');
+                cardContainer.setAttribute('data-aos-delay', (index % 4) * 100);
+
+                const image1 = `tarjeta${product.id}.1.jpg`;
+                const image2 = `tarjeta${product.id}.2.jpg`;
+                const fallbackImage = `https://placehold.co/600x600/f1f5f9/0f172a?text=${encodeURIComponent(product.name)}`;
+
+                const validPrice = hasValidPrice(product.price);
+                let priceDisplay = validPrice
+                    ? `$${formatPrice(product.price)}` 
+                    : '<span class="text-sm text-gray-400">Sin precio</span>';
+
+                cardContainer.innerHTML = `
+                    <div class="card-inner hover-flip rounded-xl shadow-lg border border-gray-100 bg-white" id="card-inner-${product.id}">
+                        
+                        <!-- FRENTE DE LA TARJETA -->
+                        <div class="card-front bg-white flex flex-col justify-between p-5" aria-hidden="false">
+                            <div>
+                                <div class="relative h-52 w-full bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+                                    <span class="absolute top-2 left-2 bg-brand-dark text-brand-primary text-[10px] font-bold px-2.5 py-1 rounded-full z-10 uppercase tracking-wide">
+                                        ${product.brand}
+                                    </span>
+                                    <button type="button" onclick="flipCard(${product.id}, event)" aria-label="Ver dorso de ${product.name}" class="absolute top-2 right-2 bg-white/90 hover:bg-white text-brand-dark p-2 rounded-full shadow-md z-10 text-xs transition-transform transform hover:scale-110" title="Ver Dorso">
+                                        <i class="fa-solid fa-rotate"></i>
+                                    </button>
+                                    <img src="${image1}" 
+                                         alt="${product.name} - Frente" 
+                                         loading="lazy" 
+                                         width="300" 
+                                         height="208" 
+                                         class="w-full h-full object-contain p-2"
+                                         onerror="this.onerror=null; this.src='${fallbackImage}';">
+                                </div>
+                                <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">${product.category}</div>
+                                <h3 class="text-base font-bold text-gray-800 mb-1 line-clamp-1">${product.name}</h3>
+                                <p class="text-gray-500 text-xs line-clamp-2">${product.description}</p>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-3 border-t border-gray-100 mt-2">
+                                <span class="text-xl font-display font-bold text-brand-dark">${priceDisplay}</span>
+                                <button ${validPrice ? `onclick="addToCart(${product.id})"` : 'disabled'} 
+                                        class="${validPrice ? 'bg-brand-primary hover:bg-brand-dark text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} px-3.5 py-2 rounded-lg transition-colors text-xs font-bold uppercase flex items-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-cart-plus text-sm"></i> Agregar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- DORSO DE LA TARJETA -->
+                        <div class="card-back bg-slate-900 text-white flex flex-col justify-between p-5" aria-hidden="true" inert>
+                            <div>
+                                <div class="relative h-52 w-full bg-black/30 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+                                    <span class="absolute top-2 left-2 bg-brand-primary text-brand-dark text-[10px] font-bold px-2.5 py-1 rounded-full z-10 uppercase tracking-wide">
+                                        Información / Dorso
+                                    </span>
+                                    <button type="button" onclick="flipCard(${product.id}, event)" aria-label="Volver al frente de ${product.name}" class="absolute top-2 right-2 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full shadow-md z-10 text-xs transition-transform transform hover:scale-110" title="Ver Frente">
+                                        <i class="fa-solid fa-rotate"></i>
+                                    </button>
+                                    <img src="${image2}" 
+                                         alt="${product.name} - Dorso" 
+                                         loading="lazy" 
+                                         width="300" 
+                                         height="208" 
+                                         class="w-full h-full object-contain p-2"
+                                         onerror="this.onerror=null; this.src='${fallbackImage}';">
+                                </div>
+                                <h3 class="text-base font-bold text-brand-primary mb-1">${product.name}</h3>
+                                <p class="text-gray-300 text-xs line-clamp-3">${product.description}</p>
+                            </div>
+
+                            <div class="pt-3 border-t border-gray-700 mt-2 flex flex-col gap-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-400">Precio actual:</span>
+                                    <span class="text-lg font-display font-bold text-brand-accent">${priceDisplay}</span>
+                                </div>
+                                <button ${validPrice ? `onclick="addToCart(${product.id})"` : 'disabled'} 
+                                        class="${validPrice ? 'bg-brand-primary hover:bg-brand-accent text-brand-dark' : 'bg-gray-700 text-gray-500 cursor-not-allowed'} w-full py-2.5 rounded-lg font-bold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cart-plus text-base"></i> Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                `;
+                grid.appendChild(cardContainer);
+            });
+
+            setTimeout(() => { AOS.refresh(); }, 100);
+        };
+
+        window.flipCard = function(id, event) {
+            if (event) event.stopPropagation();
+            const cardInner = document.getElementById(`card-inner-${id}`);
+            if (cardInner) {
+                const isFlipped = cardInner.classList.toggle('is-flipped');
+                const front = cardInner.querySelector('.card-front');
+                const back = cardInner.querySelector('.card-back');
+
+                front.setAttribute('aria-hidden', String(isFlipped));
+                back.setAttribute('aria-hidden', String(!isFlipped));
+                front.toggleAttribute('inert', isFlipped);
+                back.toggleAttribute('inert', !isFlipped);
+
+                const targetButton = (isFlipped ? back : front).querySelector('button');
+                requestAnimationFrame(() => targetButton?.focus());
+            }
+        };
+
+        window.filterProducts = function(brand) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText.includes(brand === 'all' ? 'Todos' : brand)) {
+                    btn.setAttribute('aria-pressed', 'true');
+                    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
+                    btn.classList.add('bg-brand-dark', 'text-white', 'border-brand-dark');
+                } else {
+                    btn.setAttribute('aria-pressed', 'false');
+                    btn.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+                    btn.classList.remove('bg-brand-dark', 'text-white', 'border-brand-dark');
+                }
+            });
+            window.renderProducts(brand);
+        };
+
+        window.toggleMenu = function(forceOpen) {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const button = document.getElementById('menu-toggle-btn');
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : menu.classList.contains('menu-hidden');
+
+            menu.setAttribute('aria-hidden', String(!shouldOpen));
+            menu.toggleAttribute('inert', !shouldOpen);
+            button.setAttribute('aria-expanded', String(shouldOpen));
+            button.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
+
+            if (shouldOpen) {
+                menu.classList.remove('menu-hidden'); 
+                menu.classList.add('menu-visible'); 
+                icon.classList.remove('fa-bars'); 
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.remove('menu-visible'); 
+                menu.classList.add('menu-hidden'); 
+                icon.classList.remove('fa-xmark'); 
+                icon.classList.add('fa-bars');
+            }
+        };
+
+        function trapFocus(container, event) {
+            const focusable = [...container.querySelectorAll(
+                'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )].filter(element => element.offsetParent !== null && !element.closest('[inert]'));
+
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        }
+
+        document.addEventListener('keydown', (event) => {
+            const adminModal = document.getElementById('admin-modal');
+            const cartDrawer = document.getElementById('cart-drawer');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const adminOpen = !adminModal.classList.contains('hidden');
+            const cartOpen = !cartDrawer.classList.contains('hidden');
+            const menuOpen = mobileMenu.classList.contains('menu-visible');
+
+            if (event.key === 'Escape') {
+                if (adminOpen) {
+                    closeAdmin();
+                } else if (cartOpen) {
+                    toggleCart(false);
+                } else if (menuOpen) {
+                    toggleMenu(false);
+                    document.getElementById('menu-toggle-btn').focus();
+                }
+                return;
+            }
+
+            if (event.key === 'Tab') {
+                if (adminOpen) trapFocus(adminModal, event);
+                else if (cartOpen) trapFocus(cartDrawer, event);
+            }
+        });
+
+        // --- ADMINISTRACIÓN Y ESTADÍSTICAS ---
+        window.openAdminModal = function() {
+            const modal = document.getElementById('admin-modal');
+            const login = document.getElementById('admin-login');
+            const dashboard = document.getElementById('admin-dashboard');
+            const input = document.getElementById('admin-password');
+            const error = document.getElementById('login-error');
+            adminReturnFocus = document.activeElement;
+            modal.classList.remove('hidden');
+            modal.setAttribute('aria-hidden', 'false');
+            modal.setAttribute('aria-labelledby', 'admin-login-title');
+            login.classList.remove('hidden'); 
+            dashboard.classList.add('hidden');
+            input.value = ''; 
+            error.classList.add('hidden'); 
+            updateBodyScroll();
+            requestAnimationFrame(() => input.focus());
+        };
+
+        window.closeAdmin = function() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+            updateBodyScroll();
+            if (adminReturnFocus instanceof HTMLElement) adminReturnFocus.focus();
+            adminReturnFocus = null;
+        };
+        window.handleEnter = function(e) { if (e.key === 'Enter') checkAdmin(); };
+
+        window.checkAdmin = function() {
+            const input = document.getElementById('admin-password');
+            if (input.value === 'dario') {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('admin-modal').setAttribute('aria-labelledby', 'admin-dashboard-title');
+                switchAdminTab('prices');
+                requestAnimationFrame(() => document.getElementById('tab-btn-prices').focus());
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+                input.classList.add('border-red-500');
+            }
+        };
+
+        window.switchAdminTab = function(tab) {
+            const pricesContent = document.getElementById('tab-content-prices');
+            const statsContent = document.getElementById('tab-content-stats');
+            const btnPrices = document.getElementById('tab-btn-prices');
+            const btnStats = document.getElementById('tab-btn-stats');
+
+            if (tab === 'prices') {
+                pricesContent.classList.remove('hidden');
+                statsContent.classList.add('hidden');
+                btnPrices.className = "flex-1 py-3 px-4 font-bold text-sm text-brand-dark border-b-2 border-brand-primary bg-white flex items-center justify-center gap-2";
+                btnStats.className = "flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2";
+                btnPrices.setAttribute('aria-selected', 'true');
+                btnStats.setAttribute('aria-selected', 'false');
+                renderAdminProducts();
+            } else {
+                pricesContent.classList.add('hidden');
+                statsContent.classList.remove('hidden');
+                btnStats.className = "flex-1 py-3 px-4 font-bold text-sm text-brand-dark border-b-2 border-brand-primary bg-white flex items-center justify-center gap-2";
+                btnPrices.className = "flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2";
+                btnStats.setAttribute('aria-selected', 'true');
+                btnPrices.setAttribute('aria-selected', 'false');
+                renderStatsRanking();
+            }
+        };
+
+        function renderAdminProducts() {
+            const list = document.getElementById('tab-content-prices');
+            list.innerHTML = '';
+            products.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col md:flex-row items-center gap-4';
+                const priceValue = hasValidPrice(p.price) ? parsePriceNumber(p.price) : '';
+                item.innerHTML = `
+                    <div class="w-12 h-12 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                        <img src="tarjeta${p.id}.1.jpg" alt="${p.name}" onerror="this.src='https://placehold.co/100'" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow text-center md:text-left">
+                        <h4 class="font-bold text-gray-800 text-sm">${p.name}</h4>
+                        <p class="text-xs text-gray-500">${p.brand}</p>
+                    </div>
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <span class="text-gray-500 font-bold">$</span>
+                        <input type="text" inputmode="numeric" id="price-input-${p.id}" value="${priceValue}" placeholder="Sin precio" class="w-full md:w-28 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-brand-primary focus:outline-none font-bold text-gray-800">
+                        <button onclick="savePrice(${p.id}, event)" aria-label="Guardar precio de ${p.name}" class="bg-brand-primary text-white px-4 py-2 rounded hover:bg-brand-dark transition-colors">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function renderStatsRanking() {
+            const list = document.getElementById('stats-ranking-list');
+            list.innerHTML = '';
+
+            // Ordenar productos por cantidad de pedidos descendente
+            const sorted = [...products].sort((a, b) => (b.ordersCount || 0) - (a.ordersCount || 0));
+            const maxOrders = sorted[0]?.ordersCount || 1;
+
+            sorted.forEach((p, idx) => {
+                const count = p.ordersCount || 0;
+                const percentage = Math.round((count / (maxOrders || 1)) * 100);
+
+                const item = document.createElement('div');
+                item.className = 'bg-slate-50 p-4 rounded-xl border border-gray-200 flex flex-col gap-2';
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full ${idx === 0 ? 'bg-amber-400 text-amber-950 font-bold' : idx === 1 ? 'bg-gray-300 text-gray-800 font-bold' : idx === 2 ? 'bg-amber-700 text-white font-bold' : 'bg-gray-200 text-gray-600'} text-xs flex items-center justify-center font-display">
+                                #${idx + 1}
+                            </span>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-sm">${p.name}</h4>
+                                <span class="text-xs text-gray-500 font-medium">${p.brand}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-bold text-brand-dark font-display">${count}</span>
+                            <span class="text-xs text-gray-500 block">unidades solicitadas</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                        <div class="bg-gradient-to-r from-brand-primary to-brand-accent h-2.5 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        window.savePrice = async function(id, event) {
+            const input = document.getElementById(`price-input-${id}`);
+            const rawPrice = input.value.trim();
+            const newPrice = rawPrice === '' ? null : parsePriceNumber(rawPrice);
+            const btn = event ? event.currentTarget : null;
+
+            if (rawPrice !== '' && newPrice === null) {
+                input.classList.add('border-red-500', 'focus:ring-red-500');
+                input.focus();
+                alert('Ingresá un precio entero mayor que cero. Ejemplo: 38000 o 38.000.');
+                return;
+            }
+
+            input.classList.remove('border-red-500', 'focus:ring-red-500');
+            
+            try {
+                await setDoc(doc(db, "products", id.toString()), {
+                    price: newPrice
+                }, { merge: true });
+
+                if (btn) {
+                    const originalContent = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    btn.classList.remove('bg-brand-primary'); 
+                    btn.classList.add('bg-green-500');
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                        btn.classList.remove('bg-green-500'); 
+                        btn.classList.add('bg-brand-primary');
+                    }, 1500);
+                }
+
+            } catch (error) {
+                console.error("Error al guardar precio:", error);
+                alert("Error al guardar: " + error.message);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+             renderProducts();
+             updateCartUI();
+             AOS.init({ duration: 800, once: true, offset: 100, easing: 'ease-out-cubic' });
+        });
+    </script>
+</body>
+</html>

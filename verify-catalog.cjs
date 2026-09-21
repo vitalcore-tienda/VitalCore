@@ -8,9 +8,28 @@ assert.equal(files.length, 27);
 for(const file of files) {
  const html=fs.readFileSync(file,'utf8');
  assert.equal((html.match(/<h1\b/g)||[]).length,1,file);
+ const canonicals = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)];
+ assert.equal(canonicals.length, 1, file);
+ assert.equal(new URL(canonicals[0][1], 'https://example.test').pathname, file === 'index.html' ? '/' : '/' + file);
+ assert.equal((html.match(/<base href="\/">/g)||[]).length, 1, file);
+ assert.ok(!html.includes('href="index.html#'), file);
+ assert.equal(new URL(canonicals[0][1]).origin, 'https://vitalcore.com.ar');
+ const legacy = fs.readFileSync('Vitalcore/' + file, 'utf8');
+ const target = canonicals[0][1];
+ assert.ok(legacy.includes(`content="0; url=${target}"`), file);
+ assert.ok(!legacy.includes('store.js'), file);
+ let destination;
+ const location = {pathname:'/Vitalcore/' + file, search:'?origen=prueba', hash:'#catalogo', replace(url){destination=url}};
+ vm.runInNewContext(legacy.match(/<script>([\s\S]*?)<\/script>/)[1], {location});
+ assert.equal(destination, target + '?origen=prueba#catalogo');
+ const guard = html.match(/<!-- legacy-route --><script>([\s\S]*?)<\/script>/)[1];
+ destination = null;
+ location.pathname = file === 'index.html' ? '/' : '/' + file;
+ vm.runInNewContext(guard, {location});
+ assert.equal(destination, null, 'La URL oficial no debe redirigir');
  for(const [,url] of html.matchAll(/href="([^"]+)"/g)) {
   if(/^(https?:|#|\.\.\/)/.test(url)) continue;
-  const target=url.split('#')[0];
+  const target=url.split('#')[0].replace(/^\//, '') || 'index.html';
   if(target==='logo.jpg') continue; // Existing missing logo, unrelated to catalog routes.
   assert.ok(fs.existsSync(target), `${file}: ${target}`);
  }

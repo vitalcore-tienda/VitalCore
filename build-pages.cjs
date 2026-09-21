@@ -3,6 +3,18 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 process.chdir(__dirname);
+// Set SITE_ORIGIN to the verified public origin when publishing.
+const origin = new URL(process.env.SITE_ORIGIN || 'https://vitalcore.com.ar/');
+if (origin && (origin.protocol !== 'https:' || origin.pathname !== '/' || origin.search || origin.hash || origin.username || origin.password)) {
+    throw new Error('SITE_ORIGIN debe ser el dominio HTTPS sin rutas, parámetros ni credenciales.');
+}
+const canonical = pathname => origin ? new URL(pathname, origin).href : pathname;
+const consolidate = (html, pathname) => html
+    .replace(/\s*<!-- legacy-route -->[\s\S]*?<!-- \/legacy-route -->/g, '')
+    .replace(/\s*<base\b[^>]*>/g, '')
+    .replace(/\s*<link\b[^>]*rel="canonical"[^>]*>/g, '')
+    .replace('<head>', () => `<head>\n    <base href="/">\n    <link rel="canonical" href="${canonical(pathname)}">\n    <!-- legacy-route --><script>if (/^\\/Vitalcore(?:\\/|$)/.test(location.pathname)) location.replace(${JSON.stringify(canonical(pathname))} + location.search + location.hash);</script><!-- /legacy-route -->`)
+    .replace(/href="(?:index\.html)?#/g, 'href="/#');
 const source = fs.readFileSync('store.js', 'utf8');
 const products = vm.runInNewContext(source.match(/let products = (\[[\s\S]*?\n        \]);/)[1]);
 const slug = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -25,9 +37,25 @@ if (!home.includes('<!-- catalog-navigation -->')) {
 }
 home = home.replace(/<!-- catalog-navigation -->[\s\S]*?<!-- \/catalog-navigation -->/, `<!-- catalog-navigation -->${navigation()}<!-- /catalog-navigation -->`);
 home = home.replace(/<!-- catalog-cards -->[\s\S]*?<!-- \/catalog-cards -->/, `<!-- catalog-cards -->${cards(products)}<!-- /catalog-cards -->`);
+home = consolidate(home, '/');
 fs.writeFileSync('index.html', home);
+fs.writeFileSync('CNAME', origin.hostname + '\n');
+function legacyPage(url, pathname) {
+    const target = canonical(pathname);
+    const output = path.join('Vitalcore', url);
+    fs.mkdirSync(path.dirname(output), { recursive: true });
+    fs.writeFileSync(output, `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VitalCore — Página trasladada</title>
+<link rel="canonical" href="${target}">
+<script>location.replace(${JSON.stringify(target)} + location.search + location.hash);</script>
+<meta http-equiv="refresh" content="0; url=${target}">
+</head><body><p>La tienda está en <a href="${target}">${target}</a>.</p></body></html>\n`);
+}
+legacyPage('index.html', '/');
 function page(url, title, description, attributes, content) {
-    let html = home.replace('<head>', '<head>\n    <base href="../">')
+    let html = home
         .replace(/<title>.*?<\/title>/, `<title>${esc(title)} | VitalCore</title>`)
         .replace(/(<meta (?:name="description"|property="og:description") content=")[^"]*"/g, `$1${esc(description)}"`)
         .replace(/(<meta property="og:title" content=")[^"]*"/, `$1${esc(title)} | VitalCore"`)
@@ -35,7 +63,8 @@ function page(url, title, description, attributes, content) {
         .replace(/href="#([^" ]*)"/g, 'href="index.html#$1"')
         .replace(/    <!-- Hero Section -->[\s\S]*?    <!-- Beneficios -->/, `<main class="bg-slate-50 py-12"><div class="container mx-auto px-4 md:px-6">${content}</div></main>\n    <!-- Beneficios -->`);
     fs.mkdirSync(path.dirname(url), { recursive: true });
-    fs.writeFileSync(url, html);
+    fs.writeFileSync(url, consolidate(html, '/' + url));
+    legacyPage(url, '/' + url);
 }
 for (const [kind, values] of [['category', categories], ['brand', brands]]) {
     for (const value of values) {

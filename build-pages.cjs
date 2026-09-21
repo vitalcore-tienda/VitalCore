@@ -9,11 +9,13 @@ if (origin && (origin.protocol !== 'https:' || origin.pathname !== '/' || origin
     throw new Error('SITE_ORIGIN debe ser el dominio HTTPS sin rutas, parámetros ni credenciales.');
 }
 const canonical = pathname => origin ? new URL(pathname, origin).href : pathname;
+const publicPaths = ['/'];
 const consolidate = (html, pathname) => html
+    .replace(/\s*<meta\b[^>]*name="robots"[^>]*>/g, '')
     .replace(/\s*<!-- legacy-route -->[\s\S]*?<!-- \/legacy-route -->/g, '')
     .replace(/\s*<base\b[^>]*>/g, '')
     .replace(/\s*<link\b[^>]*rel="canonical"[^>]*>/g, '')
-    .replace('<head>', () => `<head>\n    <base href="/">\n    <link rel="canonical" href="${canonical(pathname)}">\n    <!-- legacy-route --><script>if (/^\\/Vitalcore(?:\\/|$)/.test(location.pathname)) location.replace(${JSON.stringify(canonical(pathname))} + location.search + location.hash);</script><!-- /legacy-route -->`)
+    .replace('<head>', () => `<head>\n    <base href="/">\n    <meta name="robots" content="index, follow">\n    <link rel="canonical" href="${canonical(pathname)}">\n    <!-- legacy-route --><script>if (/^\\/Vitalcore(?:\\/|$)/.test(location.pathname)) location.replace(${JSON.stringify(canonical(pathname))} + location.search + location.hash);</script><!-- /legacy-route -->`)
     .replace(/href="(?:index\.html)?#/g, 'href="/#');
 const source = fs.readFileSync('store.js', 'utf8');
 const products = vm.runInNewContext(source.match(/let products = (\[[\s\S]*?\n        \]);/)[1]);
@@ -55,6 +57,7 @@ function legacyPage(url, pathname) {
 }
 legacyPage('index.html', '/');
 function page(url, title, description, attributes, content) {
+    publicPaths.push('/' + url);
     let html = home
         .replace(/<title>.*?<\/title>/, `<title>${esc(title)} | VitalCore</title>`)
         .replace(/(<meta (?:name="description"|property="og:description") content=")[^"]*"/g, `$1${esc(description)}"`)
@@ -87,4 +90,11 @@ for (const p of products) {
         </div></article><div id="product-grid" hidden></div>
         <section class="mt-12"><h2 class="text-2xl font-display mb-6">Más productos para explorar</h2><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">${cards(products.filter(other => other.id !== p.id && other.category === p.category).concat(products.filter(other => other.category !== p.category)).slice(0, 3))}</div></section>`);
 }
-console.log(`Generadas ${products.length} fichas, ${categories.length} categorías y ${brands.length} marcas.`);
+// Include only canonical public pages; let crawlers follow legacy redirects.
+// Omit lastmod because a build is not evidence of a content update.
+fs.writeFileSync('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    [...new Set(publicPaths)].map(pathname => `  <url><loc>${esc(canonical(pathname))}</loc></url>`).join('\n') +
+    '\n</urlset>\n');
+fs.writeFileSync('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${canonical('/sitemap.xml')}\n`);
+console.log(`Generadas ${products.length} fichas, ${categories.length} categorías y ${brands.length} marcas; sitemap y robots.txt actualizados.`);

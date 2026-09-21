@@ -194,20 +194,20 @@
 
             <!-- Botones de Acción (Carrito y Menú Móvil) -->
             <div class="flex items-center gap-3">
-                <button onclick="toggleCart()" aria-label="Abrir carrito de compras" class="relative bg-brand-primary/20 hover:bg-brand-primary text-brand-primary hover:text-brand-dark p-2.5 rounded-full transition-all duration-300 flex items-center justify-center">
+                <button id="cart-open-btn" onclick="toggleCart()" aria-label="Abrir carrito de compras" aria-controls="cart-drawer" aria-expanded="false" class="relative bg-brand-primary/20 hover:bg-brand-primary text-brand-primary hover:text-brand-dark p-2.5 rounded-full transition-all duration-300 flex items-center justify-center">
                     <i class="fa-solid fa-cart-shopping text-xl"></i>
                     <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-500 text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all scale-0">0</span>
                 </button>
 
                 <!-- Botón Menú Móvil -->
-                <button onclick="toggleMenu()" class="md:hidden text-2xl text-brand-primary focus:outline-none p-2" aria-label="Menu">
+                <button id="menu-toggle-btn" onclick="toggleMenu()" class="md:hidden text-2xl text-brand-primary focus:outline-none p-2" aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false">
                     <i id="menu-icon" class="fa-solid fa-bars transition-transform duration-300"></i>
                 </button>
             </div>
         </div>
 
         <!-- Menu Movil -->
-        <div id="mobile-menu" class="md:hidden bg-brand-dark border-t border-brand-primary/20 absolute w-full left-0 top-full shadow-2xl menu-hidden overflow-hidden z-40">
+        <div id="mobile-menu" aria-hidden="true" inert class="md:hidden bg-brand-dark border-t border-brand-primary/20 absolute w-full left-0 top-full shadow-2xl menu-hidden overflow-hidden z-40">
             <div class="flex flex-col p-6 space-y-4 font-semibold text-center uppercase tracking-wide">
                 <a href="#inicio" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-brand-primary transition-colors">Inicio</a>
                 <a href="#catalogo" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Catálogo</a>
@@ -248,10 +248,10 @@
                 <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto px-4">Seleccioná tus suplementos e irás acumulando tu pedido en el carrito de compras.</p>
                 
                 <div class="mt-6 flex overflow-x-auto pb-4 md:pb-0 px-2 md:justify-center gap-3 no-scrollbar" id="filters">
-                    <button onclick="filterProducts('all')" class="filter-btn active whitespace-nowrap bg-brand-dark text-white px-5 py-2 rounded-full font-semibold text-sm shadow-md hover:bg-gray-800 transition-all flex-shrink-0">Todos</button>
-                    <button onclick="filterProducts('Star Nutrition')" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Star Nutrition</button>
-                    <button onclick="filterProducts('Ena')" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Ena Sport</button>
-                    <button onclick="filterProducts('Gold Nutrition')" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Gold Nutrition</button>
+                    <button onclick="filterProducts('all')" aria-pressed="true" class="filter-btn active whitespace-nowrap bg-brand-dark text-white px-5 py-2 rounded-full font-semibold text-sm shadow-md hover:bg-gray-800 transition-all flex-shrink-0">Todos</button>
+                    <button onclick="filterProducts('Star Nutrition')" aria-pressed="false" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Star Nutrition</button>
+                    <button onclick="filterProducts('Ena')" aria-pressed="false" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Ena Sport</button>
+                    <button onclick="filterProducts('Gold Nutrition')" aria-pressed="false" class="filter-btn whitespace-nowrap bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm shadow-sm hover:bg-gray-100 transition-all flex-shrink-0 border border-gray-200">Gold Nutrition</button>
                 </div>
             </div>
 
@@ -322,16 +322,16 @@
     </footer>
 
     <!-- DRAWER DEL CARRITO DE COMPRAS -->
-    <div id="cart-drawer" class="fixed inset-0 z-50 hidden transition-all duration-300">
-        <div class="cart-overlay absolute inset-0" onclick="toggleCart()"></div>
+    <div id="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true" class="fixed inset-0 z-50 hidden transition-all duration-300">
+        <div class="cart-overlay absolute inset-0" aria-hidden="true" onclick="toggleCart(false)"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col justify-between transform transition-transform duration-300 z-50">
             <!-- Header del Carrito -->
             <div class="bg-brand-dark text-white p-5 flex justify-between items-center border-b border-brand-primary/20">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-cart-shopping text-xl text-brand-primary"></i>
-                    <h3 class="text-xl font-bold font-display">Tu Carrito de Compras</h3>
+                    <h3 id="cart-title" class="text-xl font-bold font-display">Tu Carrito de Compras</h3>
                 </div>
-                <button onclick="toggleCart()" class="text-gray-300 hover:text-white p-2 rounded-full transition-colors" aria-label="Cerrar carrito">
+                <button id="cart-close-btn" onclick="toggleCart(false)" class="text-gray-300 hover:text-white p-2 rounded-full transition-colors" aria-label="Cerrar carrito">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
@@ -372,24 +372,25 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 md:top-auto md:bottom-24 md:left-auto md:right-6 md:translate-x-0 w-[90%] md:w-auto bg-brand-dark text-white px-6 py-4 rounded-lg shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-3 border border-brand-primary/20">
+    <div id="toast" role="status" aria-live="polite" aria-atomic="true" class="fixed top-20 left-1/2 transform -translate-x-1/2 md:top-auto md:bottom-24 md:left-auto md:right-6 md:translate-x-0 w-[90%] md:w-auto bg-brand-dark text-white px-6 py-4 rounded-lg shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-3 border border-brand-primary/20">
         <i class="fa-solid fa-circle-check text-brand-primary text-xl"></i>
         <span id="toast-text" class="text-sm font-medium">¡Producto agregado al carrito!</span>
     </div>
 
     <!-- ADMIN MODAL -->
-    <div id="admin-modal" class="fixed inset-0 admin-modal-bg z-50 hidden flex items-center justify-center p-4">
+    <div id="admin-modal" role="dialog" aria-modal="true" aria-labelledby="admin-login-title" aria-hidden="true" class="fixed inset-0 admin-modal-bg z-50 hidden flex items-center justify-center p-4">
         <!-- LOGIN -->
         <div id="admin-login" class="bg-white rounded-xl shadow-2xl w-full max-w-md p-8 transform transition-all">
             <div class="text-center mb-6">
                 <i class="fa-solid fa-user-shield text-4xl text-brand-dark mb-2"></i>
-                <h2 class="text-2xl font-bold text-brand-dark font-display">Acceso Administrativo</h2>
+                <h2 id="admin-login-title" class="text-2xl font-bold text-brand-dark font-display">Acceso Administrativo</h2>
                 <p class="text-gray-500 text-sm">Ingrese contraseña para continuar</p>
             </div>
             <div class="space-y-4">
                 <div>
-                    <input type="password" id="admin-password" placeholder="Contraseña" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition-all" onkeypress="handleEnter(event)">
-                    <p id="login-error" class="text-red-500 text-xs mt-2 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> Contraseña incorrecta</p>
+                    <label for="admin-password" class="sr-only">Contraseña administrativa</label>
+                    <input type="password" id="admin-password" placeholder="Contraseña" autocomplete="current-password" aria-describedby="login-error" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition-all" onkeypress="handleEnter(event)">
+                    <p id="login-error" role="alert" class="text-red-500 text-xs mt-2 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> Contraseña incorrecta</p>
                 </div>
                 <div class="flex gap-3">
                     <button onclick="closeAdmin()" class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors">Cancelar</button>
@@ -403,32 +404,32 @@
             <div class="bg-brand-dark text-white p-5 flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-chart-line text-xl text-brand-primary"></i>
-                    <h2 class="text-xl font-bold font-display">Panel de Control & Estadísticas</h2>
+                    <h2 id="admin-dashboard-title" class="text-xl font-bold font-display">Panel de Control & Estadísticas</h2>
                 </div>
-                <button onclick="closeAdmin()" class="text-gray-300 hover:text-white hover:bg-white/10 p-2 rounded-full transition-all w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <button onclick="closeAdmin()" aria-label="Cerrar panel administrativo" class="text-gray-300 hover:text-white hover:bg-white/10 p-2 rounded-full transition-all w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
             <!-- Tabs del Admin -->
-            <div class="flex border-b border-gray-200 bg-gray-100">
-                <button id="tab-btn-prices" onclick="switchAdminTab('prices')" class="flex-1 py-3 px-4 font-bold text-sm text-brand-dark border-b-2 border-brand-primary bg-white flex items-center justify-center gap-2">
+            <div role="tablist" aria-label="Secciones del panel administrativo" class="flex border-b border-gray-200 bg-gray-100">
+                <button id="tab-btn-prices" role="tab" aria-selected="true" aria-controls="tab-content-prices" onclick="switchAdminTab('prices')" class="flex-1 py-3 px-4 font-bold text-sm text-brand-dark border-b-2 border-brand-primary bg-white flex items-center justify-center gap-2">
                     <i class="fa-solid fa-pen-to-square"></i> Precios
                 </button>
-                <button id="tab-btn-stats" onclick="switchAdminTab('stats')" class="flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2">
+                <button id="tab-btn-stats" role="tab" aria-selected="false" aria-controls="tab-content-stats" onclick="switchAdminTab('stats')" class="flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2">
                     <i class="fa-solid fa-fire text-orange-500"></i> Productos Más Pedidos
                 </button>
             </div>
 
             <div class="flex-1 overflow-y-auto p-6 bg-slate-50">
                 <!-- TAB PRECIOS -->
-                <div id="tab-content-prices" class="grid gap-4"></div>
+                <div id="tab-content-prices" role="tabpanel" aria-labelledby="tab-btn-prices" class="grid gap-4"></div>
 
                 <!-- TAB ESTADÍSTICAS -->
-                <div id="tab-content-stats" class="hidden space-y-6">
+                <div id="tab-content-stats" role="tabpanel" aria-labelledby="tab-btn-stats" class="hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
                         <h3 class="text-lg font-bold text-brand-dark font-display mb-1 flex items-center gap-2">
                             <i class="fa-solid fa-trophy text-amber-500"></i> Ranking de Demanda por Clientes
                         </h3>
-                        <p class="text-xs text-gray-500 mb-6">Muestra la cantidad acumulada de veces que los clientes enviaron pedidos a WhatsApp solicitando cada producto.</p>
+                        <p class="text-xs text-gray-500 mb-6">Muestra la cantidad acumulada de unidades incluidas en pedidos iniciados por WhatsApp.</p>
                         
                         <div id="stats-ranking-list" class="space-y-4"></div>
                     </div>
@@ -436,7 +437,7 @@
             </div>
 
             <div class="p-4 border-t border-gray-200 bg-white flex justify-between items-center text-xs text-gray-500">
-                <span class="flex items-center gap-1 text-green-600 font-semibold"><i class="fa-solid fa-wifi"></i> Conectado a Firestore</span>
+                <span id="firestore-status" role="status" class="flex items-center gap-1 text-amber-600 font-semibold"><i class="fa-solid fa-spinner fa-spin"></i> Conectando con Firestore...</span>
                 <button onclick="closeAdmin()" class="px-6 py-2 bg-brand-dark text-white rounded-lg font-bold hover:bg-brand-primary transition-colors">Finalizar</button>
             </div>
         </div>
@@ -447,7 +448,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, onSnapshot, increment, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // Configuración Firebase
         const firebaseConfig = {
@@ -482,61 +483,163 @@
         ];
 
         // Estado del Carrito de Compras
-        let cart = [];
+        const CART_STORAGE_KEY = 'vitalcore-cart-v1';
+
+        const loadCart = () => {
+            try {
+                const storedCart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+                if (!Array.isArray(storedCart)) return [];
+
+                const validIds = new Set(products.map(product => product.id));
+                const quantities = new Map();
+
+                storedCart.forEach(item => {
+                    const id = Number(item?.id);
+                    const quantity = Number(item?.quantity);
+                    if (!validIds.has(id) || !Number.isInteger(quantity) || quantity <= 0) return;
+                    quantities.set(id, Math.min((quantities.get(id) || 0) + quantity, 99));
+                });
+
+                return [...quantities].map(([id, quantity]) => ({ id, quantity }));
+            } catch (error) {
+                console.warn('No se pudo recuperar el carrito guardado:', error);
+                return [];
+            }
+        };
+
+        const persistCart = () => {
+            try {
+                localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+            } catch (error) {
+                console.warn('No se pudo guardar el carrito:', error);
+            }
+        };
+
+        let cart = loadCart();
+        let isCheckingOut = false;
+
+        const getDetailedCart = () => cart
+            .map(cartItem => {
+                const product = products.find(p => p.id === cartItem.id);
+                return product ? { ...product, quantity: cartItem.quantity } : null;
+            })
+            .filter(Boolean);
 
         // --- FORMATEO DE PRECIOS ---
-        const formatPrice = (price) => {
-            if (!price) return '0';
-            const cleanPrice = price.toString().replace(/\./g, '');
-            const number = parseFloat(cleanPrice);
-            if (isNaN(number)) return price;
-            return number.toLocaleString('es-AR');
+        const parsePriceNumber = (price) => {
+            if (typeof price === 'number') {
+                return Number.isFinite(price) && price > 0 && price <= Number.MAX_SAFE_INTEGER ? price : null;
+            }
+            if (typeof price !== 'string') return null;
+            const cleanPrice = price.trim().replace(/^\$\s*/, '');
+            // Formato argentino: miles con punto y decimales con coma.
+            if (!/^(?:\d+|\d{1,3}(?:\.\d{3})+)(?:,\d{1,2})?$/.test(cleanPrice)) return null;
+            const number = Number(cleanPrice.replace(/\./g, '').replace(',', '.'));
+            return Number.isFinite(number) && number > 0 && number <= Number.MAX_SAFE_INTEGER ? number : null;
         };
 
-        const parsePriceNumber = (price) => {
-            if (!price) return 0;
-            const cleanPrice = price.toString().replace(/\./g, '');
-            const number = parseFloat(cleanPrice);
-            return isNaN(number) ? 0 : number;
+        const hasValidPrice = (price) => parsePriceNumber(price) !== null;
+
+        const formatPrice = (price) => {
+            const number = parsePriceNumber(price);
+            return number === null ? 'Consultar precio' : number.toLocaleString('es-AR');
         };
+
+        const priceInquiryUrl = (product) => `https://wa.me/5491165846235?text=${encodeURIComponent(`Hola, quisiera consultar el precio de ${product.name} (${product.brand}).`)}`;
+
+        function setFirestoreStatus(status) {
+            const statusElement = document.getElementById('firestore-status');
+            if (!statusElement) return;
+
+            const states = {
+                connected: {
+                    className: 'flex items-center gap-1 text-green-600 font-semibold',
+                    content: '<i class="fa-solid fa-wifi"></i> Conectado a Firestore'
+                },
+                error: {
+                    className: 'flex items-center gap-1 text-red-600 font-semibold',
+                    content: '<i class="fa-solid fa-triangle-exclamation"></i> Sin conexión con Firestore'
+                }
+            };
+
+            const state = states[status];
+            if (!state) return;
+            statusElement.className = state.className;
+            statusElement.innerHTML = state.content;
+        }
 
         // --- SINCRONIZACIÓN FIREBASE EN TIEMPO REAL ---
         onSnapshot(collection(db, "products"), (snapshot) => {
+            products.forEach(product => { product.price = null; });
             snapshot.forEach((docSnap) => {
                 const data = docSnap.data();
                 const localProduct = products.find(p => p.id.toString() === docSnap.id);
                 if (localProduct) {
-                    if (data.price !== undefined) localProduct.price = data.price;
+                    localProduct.price = parsePriceNumber(data.price);
                     if (data.ordersCount !== undefined) localProduct.ordersCount = data.ordersCount;
                 }
             });
 
             renderProducts();
             updateCartUI();
+            setFirestoreStatus('connected');
             
             if (!document.getElementById('admin-modal').classList.contains('hidden')) {
                 renderAdminProducts();
                 renderStatsRanking();
             }
+        }, (error) => {
+            console.error('Error al sincronizar productos con Firestore:', error);
+            setFirestoreStatus('error');
+            showToast('No pudimos actualizar los productos. Revisá tu conexión e intentá nuevamente.');
         });
 
         // --- CARRITO DE COMPRAS ---
-        window.toggleCart = function() {
+        let cartReturnFocus = null;
+        let adminReturnFocus = null;
+
+        function updateBodyScroll() {
+            const cartOpen = !document.getElementById('cart-drawer').classList.contains('hidden');
+            const adminOpen = !document.getElementById('admin-modal').classList.contains('hidden');
+            document.body.classList.toggle('overflow-hidden', cartOpen || adminOpen);
+        }
+
+        window.toggleCart = function(forceOpen) {
             const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('hidden');
+            const openButton = document.getElementById('cart-open-btn');
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : drawer.classList.contains('hidden');
+
+            drawer.classList.toggle('hidden', !shouldOpen);
+            drawer.setAttribute('aria-hidden', String(!shouldOpen));
+            openButton.setAttribute('aria-expanded', String(shouldOpen));
+            updateBodyScroll();
+
+            if (shouldOpen) {
+                cartReturnFocus = document.activeElement;
+                requestAnimationFrame(() => document.getElementById('cart-close-btn').focus());
+            } else if (cartReturnFocus instanceof HTMLElement) {
+                cartReturnFocus.focus();
+                cartReturnFocus = null;
+            }
         };
 
         window.addToCart = function(productId) {
             const product = products.find(p => p.id === productId);
-            if (!product || !product.price) return;
+            if (!product || !hasValidPrice(product.price)) {
+                showToast('Este producto todavía no tiene un precio válido.');
+                return;
+            }
 
             const existingItem = cart.find(item => item.id === productId);
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                cart.push({ ...product, quantity: 1 });
+                cart.push({ id: product.id, quantity: 1 });
             }
 
+            persistCart();
             updateCartUI();
             showToast(`¡${product.name} agregado al carrito!`);
         };
@@ -549,11 +652,13 @@
             if (item.quantity <= 0) {
                 cart = cart.filter(i => i.id !== productId);
             }
+            persistCart();
             updateCartUI();
         };
 
         window.removeFromCart = function(productId) {
             cart = cart.filter(i => i.id !== productId);
+            persistCart();
             updateCartUI();
         };
 
@@ -562,6 +667,7 @@
             const badge = document.getElementById('cart-badge');
             const totalElement = document.getElementById('cart-total');
             const checkoutBtn = document.getElementById('checkout-btn');
+            const detailedCart = getDetailedCart();
 
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -574,7 +680,7 @@
             }
 
             // Renderizado items
-            if (cart.length === 0) {
+            if (detailedCart.length === 0) {
                 itemsContainer.innerHTML = `
                     <div class="text-center py-12 text-gray-400 flex flex-col items-center gap-3">
                         <i class="fa-solid fa-basket-shopping text-5xl text-gray-300"></i>
@@ -586,32 +692,35 @@
                 return;
             }
 
-            checkoutBtn.disabled = false;
+            checkoutBtn.disabled = isCheckingOut || detailedCart.some(item => !hasValidPrice(item.price));
             let totalPrice = 0;
             itemsContainer.innerHTML = '';
 
-            cart.forEach(item => {
-                const itemPriceNum = parsePriceNumber(item.price);
+            detailedCart.forEach(item => {
+                const itemPriceNum = parsePriceNumber(item.price) ?? 0;
                 const subtotal = itemPriceNum * item.quantity;
                 totalPrice += subtotal;
+                const itemPriceDisplay = hasValidPrice(item.price)
+                    ? `$${formatPrice(item.price)}`
+                    : `<a href="${priceInquiryUrl(item)}" target="_blank" rel="noopener noreferrer" class="underline">Consultar precio por WhatsApp</a>`;
 
                 const itemRow = document.createElement('div');
                 itemRow.className = 'bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between gap-3';
                 itemRow.innerHTML = `
                     <div class="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
-                        <img src="tarjeta${item.id}.1.jpg" onerror="this.src='https://placehold.co/100'" class="w-full h-full object-cover">
+                        <img src="tarjeta${item.id}.1.jpg" alt="${item.name}" onerror="this.src='https://placehold.co/100'" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-grow min-w-0">
                         <h4 class="font-bold text-gray-800 text-xs truncate">${item.name}</h4>
-                        <p class="text-[11px] text-brand-dark font-semibold">$${formatPrice(item.price)}</p>
+                        <p class="text-[11px] text-brand-dark font-semibold">${itemPriceDisplay}</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-                            <button onclick="updateCartQuantity(${item.id}, -1)" class="px-2 py-1 text-gray-600 hover:bg-gray-200 text-xs font-bold">-</button>
+                            <button onclick="updateCartQuantity(${item.id}, -1)" aria-label="Reducir cantidad de ${item.name}" class="px-2 py-1 text-gray-600 hover:bg-gray-200 text-xs font-bold">-</button>
                             <span class="px-2 text-xs font-bold text-gray-800">${item.quantity}</span>
-                            <button onclick="updateCartQuantity(${item.id}, 1)" class="px-2 py-1 text-gray-600 hover:bg-gray-200 text-xs font-bold">+</button>
+                            <button onclick="updateCartQuantity(${item.id}, 1)" aria-label="Aumentar cantidad de ${item.name}" class="px-2 py-1 text-gray-600 hover:bg-gray-200 text-xs font-bold">+</button>
                         </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-600 p-1 text-xs" title="Eliminar">
+                        <button onclick="removeFromCart(${item.id})" aria-label="Eliminar ${item.name} del carrito" class="text-red-400 hover:text-red-600 p-1 text-xs" title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -619,29 +728,26 @@
                 itemsContainer.appendChild(itemRow);
             });
 
-            totalElement.innerText = `$${formatPrice(totalPrice)}`;
+            totalElement.innerText = detailedCart.some(item => !hasValidPrice(item.price))
+                ? 'Consultar precio' : `$${formatPrice(totalPrice)}`;
         }
 
         window.checkoutOrder = async function() {
-            if (cart.length === 0) return;
+            if (isCheckingOut) return;
 
-            // 1. Incrementar estadísticas en Firebase Firestore
-            try {
-                for (const item of cart) {
-                    await setDoc(doc(db, "products", item.id.toString()), {
-                        ordersCount: increment(item.quantity)
-                    }, { merge: true });
-                }
-            } catch (error) {
-                console.error("Error al registrar estadísticas:", error);
+            const orderItems = getDetailedCart();
+            if (orderItems.length === 0) return;
+            if (orderItems.some(item => !hasValidPrice(item.price))) {
+                showToast('Hay productos sin un precio válido en el carrito.');
+                return;
             }
 
-            // 2. Construir mensaje ordenado de WhatsApp
+            // 1. Construir el mensaje antes de realizar cualquier operación asíncrona
             const phone = "5491165846235";
             let message = "Hola VitalCore! 👋 Quisiera realizar el siguiente pedido:\n\n";
 
             let grandTotal = 0;
-            cart.forEach((item, index) => {
+            orderItems.forEach((item, index) => {
                 const subtotal = parsePriceNumber(item.price) * item.quantity;
                 grandTotal += subtotal;
                 message += `${index + 1}. *${item.name}* (${item.brand})\n   Cantidad: ${item.quantity} x $${formatPrice(item.price)} = *$${formatPrice(subtotal)}*\n`;
@@ -649,10 +755,52 @@
 
             message += `\n💰 *TOTAL ESTIMADO: $${formatPrice(grandTotal)}*\n\n¿Tienen stock disponible para coordinar la entrega?`;
 
-            showToast("¡Redirigiendo a WhatsApp con tu pedido!");
-            setTimeout(() => {
-                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-            }, 800);
+            // 2. Abrir WhatsApp directamente desde el clic para evitar bloqueadores
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const originalContent = checkoutBtn.innerHTML;
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+            isCheckingOut = true;
+            checkoutBtn.disabled = true;
+            checkoutBtn.setAttribute('aria-busy', 'true');
+            checkoutBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xl"></i> Abriendo WhatsApp...';
+
+            let whatsappWindow = null;
+            try {
+                whatsappWindow = window.open(whatsappUrl, '_blank');
+                if (whatsappWindow) whatsappWindow.opener = null;
+            } catch (error) {
+                console.error('No se pudo abrir WhatsApp:', error);
+            }
+
+            if (!whatsappWindow) {
+                isCheckingOut = false;
+                checkoutBtn.removeAttribute('aria-busy');
+                checkoutBtn.innerHTML = originalContent;
+                updateCartUI();
+                showToast('No se pudo abrir WhatsApp. Habilitá las ventanas emergentes e intentá nuevamente.');
+                return;
+            }
+
+            showToast('¡Pedido abierto en WhatsApp! Revisalo antes de enviarlo.');
+
+            // 3. Registrar la intención de pedido una sola vez y en una escritura atómica
+            try {
+                const batch = writeBatch(db);
+                orderItems.forEach(item => {
+                    batch.set(doc(db, "products", item.id.toString()), {
+                        ordersCount: increment(item.quantity)
+                    }, { merge: true });
+                });
+                await batch.commit();
+            } catch (error) {
+                console.error("Error al registrar estadísticas:", error);
+            } finally {
+                isCheckingOut = false;
+                checkoutBtn.removeAttribute('aria-busy');
+                checkoutBtn.innerHTML = originalContent;
+                updateCartUI();
+            }
         };
 
         function showToast(msg) {
@@ -688,21 +836,22 @@
                 const image2 = `tarjeta${product.id}.2.jpg`;
                 const fallbackImage = `https://placehold.co/600x600/f1f5f9/0f172a?text=${encodeURIComponent(product.name)}`;
 
-                let priceDisplay = product.price 
+                const validPrice = hasValidPrice(product.price);
+                let priceDisplay = validPrice
                     ? `$${formatPrice(product.price)}` 
-                    : '<span class="text-sm text-gray-400"><i class="fa-solid fa-spinner fa-spin"></i></span>';
+                    : '<span class="text-sm text-gray-400">Consultar precio</span>';
 
                 cardContainer.innerHTML = `
                     <div class="card-inner hover-flip rounded-xl shadow-lg border border-gray-100 bg-white" id="card-inner-${product.id}">
                         
                         <!-- FRENTE DE LA TARJETA -->
-                        <div class="card-front bg-white flex flex-col justify-between p-5">
+                        <div class="card-front bg-white flex flex-col justify-between p-5" aria-hidden="false">
                             <div>
                                 <div class="relative h-52 w-full bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
                                     <span class="absolute top-2 left-2 bg-brand-dark text-brand-primary text-[10px] font-bold px-2.5 py-1 rounded-full z-10 uppercase tracking-wide">
                                         ${product.brand}
                                     </span>
-                                    <button type="button" onclick="flipCard(${product.id}, event)" class="absolute top-2 right-2 bg-white/90 hover:bg-white text-brand-dark p-2 rounded-full shadow-md z-10 text-xs transition-transform transform hover:scale-110" title="Ver Dorso">
+                                    <button type="button" onclick="flipCard(${product.id}, event)" aria-label="Ver dorso de ${product.name}" class="absolute top-2 right-2 bg-white/90 hover:bg-white text-brand-dark p-2 rounded-full shadow-md z-10 text-xs transition-transform transform hover:scale-110" title="Ver Dorso">
                                         <i class="fa-solid fa-rotate"></i>
                                     </button>
                                     <img src="${image1}" 
@@ -720,21 +869,21 @@
 
                             <div class="flex items-center justify-between pt-3 border-t border-gray-100 mt-2">
                                 <span class="text-xl font-display font-bold text-brand-dark">${priceDisplay}</span>
-                                <button ${product.price ? `onclick="addToCart(${product.id})"` : 'disabled'} 
-                                        class="${product.price ? 'bg-brand-primary hover:bg-brand-dark text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} px-3.5 py-2 rounded-lg transition-colors text-xs font-bold uppercase flex items-center gap-1.5 shadow-sm">
+                                ${validPrice ? `<button onclick="addToCart(${product.id})"
+                                        class="${validPrice ? 'bg-brand-primary hover:bg-brand-dark text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} px-3.5 py-2 rounded-lg transition-colors text-xs font-bold uppercase flex items-center gap-1.5 shadow-sm">
                                     <i class="fa-solid fa-cart-plus text-sm"></i> Agregar
-                                </button>
+                                </button>` : `<a href="${priceInquiryUrl(product)}" target="_blank" rel="noopener noreferrer" aria-label="Consultar precio de ${product.name} por WhatsApp" class="bg-brand-primary hover:bg-brand-dark text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>`}
                             </div>
                         </div>
 
                         <!-- DORSO DE LA TARJETA -->
-                        <div class="card-back bg-slate-900 text-white flex flex-col justify-between p-5">
+                        <div class="card-back bg-slate-900 text-white flex flex-col justify-between p-5" aria-hidden="true" inert>
                             <div>
                                 <div class="relative h-52 w-full bg-black/30 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
                                     <span class="absolute top-2 left-2 bg-brand-primary text-brand-dark text-[10px] font-bold px-2.5 py-1 rounded-full z-10 uppercase tracking-wide">
                                         Información / Dorso
                                     </span>
-                                    <button type="button" onclick="flipCard(${product.id}, event)" class="absolute top-2 right-2 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full shadow-md z-10 text-xs transition-transform transform hover:scale-110" title="Ver Frente">
+                                    <button type="button" onclick="flipCard(${product.id}, event)" aria-label="Volver al frente de ${product.name}" class="absolute top-2 right-2 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full shadow-md z-10 text-xs transition-transform transform hover:scale-110" title="Ver Frente">
                                         <i class="fa-solid fa-rotate"></i>
                                     </button>
                                     <img src="${image2}" 
@@ -754,10 +903,10 @@
                                     <span class="text-xs text-gray-400">Precio actual:</span>
                                     <span class="text-lg font-display font-bold text-brand-accent">${priceDisplay}</span>
                                 </div>
-                                <button ${product.price ? `onclick="addToCart(${product.id})"` : 'disabled'} 
-                                        class="${product.price ? 'bg-brand-primary hover:bg-brand-accent text-brand-dark' : 'bg-gray-700 text-gray-500 cursor-not-allowed'} w-full py-2.5 rounded-lg font-bold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2">
+                                ${validPrice ? `<button onclick="addToCart(${product.id})"
+                                        class="${validPrice ? 'bg-brand-primary hover:bg-brand-accent text-brand-dark' : 'bg-gray-700 text-gray-500 cursor-not-allowed'} w-full py-2.5 rounded-lg font-bold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2">
                                     <i class="fa-solid fa-cart-plus text-base"></i> Agregar al Carrito
-                                </button>
+                                </button>` : `<a href="${priceInquiryUrl(product)}" target="_blank" rel="noopener noreferrer" class="bg-brand-primary hover:bg-brand-accent text-brand-dark w-full py-2.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2"><i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp</a>`}
                             </div>
                         </div>
 
@@ -773,7 +922,17 @@
             if (event) event.stopPropagation();
             const cardInner = document.getElementById(`card-inner-${id}`);
             if (cardInner) {
-                cardInner.classList.toggle('is-flipped');
+                const isFlipped = cardInner.classList.toggle('is-flipped');
+                const front = cardInner.querySelector('.card-front');
+                const back = cardInner.querySelector('.card-back');
+
+                front.setAttribute('aria-hidden', String(isFlipped));
+                back.setAttribute('aria-hidden', String(!isFlipped));
+                front.toggleAttribute('inert', isFlipped);
+                back.toggleAttribute('inert', !isFlipped);
+
+                const targetButton = (isFlipped ? back : front).querySelector('button');
+                requestAnimationFrame(() => targetButton?.focus());
             }
         };
 
@@ -781,9 +940,11 @@
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => {
                 if (btn.innerText.includes(brand === 'all' ? 'Todos' : brand)) {
+                    btn.setAttribute('aria-pressed', 'true');
                     btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
                     btn.classList.add('bg-brand-dark', 'text-white', 'border-brand-dark');
                 } else {
+                    btn.setAttribute('aria-pressed', 'false');
                     btn.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
                     btn.classList.remove('bg-brand-dark', 'text-white', 'border-brand-dark');
                 }
@@ -791,10 +952,20 @@
             window.renderProducts(brand);
         };
 
-        window.toggleMenu = function() {
+        window.toggleMenu = function(forceOpen) {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
-            if (menu.classList.contains('menu-hidden')) {
+            const button = document.getElementById('menu-toggle-btn');
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : menu.classList.contains('menu-hidden');
+
+            menu.setAttribute('aria-hidden', String(!shouldOpen));
+            menu.toggleAttribute('inert', !shouldOpen);
+            button.setAttribute('aria-expanded', String(shouldOpen));
+            button.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
+
+            if (shouldOpen) {
                 menu.classList.remove('menu-hidden'); 
                 menu.classList.add('menu-visible'); 
                 icon.classList.remove('fa-bars'); 
@@ -807,6 +978,50 @@
             }
         };
 
+        function trapFocus(container, event) {
+            const focusable = [...container.querySelectorAll(
+                'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )].filter(element => element.offsetParent !== null && !element.closest('[inert]'));
+
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        }
+
+        document.addEventListener('keydown', (event) => {
+            const adminModal = document.getElementById('admin-modal');
+            const cartDrawer = document.getElementById('cart-drawer');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const adminOpen = !adminModal.classList.contains('hidden');
+            const cartOpen = !cartDrawer.classList.contains('hidden');
+            const menuOpen = mobileMenu.classList.contains('menu-visible');
+
+            if (event.key === 'Escape') {
+                if (adminOpen) {
+                    closeAdmin();
+                } else if (cartOpen) {
+                    toggleCart(false);
+                } else if (menuOpen) {
+                    toggleMenu(false);
+                    document.getElementById('menu-toggle-btn').focus();
+                }
+                return;
+            }
+
+            if (event.key === 'Tab') {
+                if (adminOpen) trapFocus(adminModal, event);
+                else if (cartOpen) trapFocus(cartDrawer, event);
+            }
+        });
+
         // --- ADMINISTRACIÓN Y ESTADÍSTICAS ---
         window.openAdminModal = function() {
             const modal = document.getElementById('admin-modal');
@@ -814,15 +1029,26 @@
             const dashboard = document.getElementById('admin-dashboard');
             const input = document.getElementById('admin-password');
             const error = document.getElementById('login-error');
-            modal.classList.remove('hidden'); 
+            adminReturnFocus = document.activeElement;
+            modal.classList.remove('hidden');
+            modal.setAttribute('aria-hidden', 'false');
+            modal.setAttribute('aria-labelledby', 'admin-login-title');
             login.classList.remove('hidden'); 
             dashboard.classList.add('hidden');
             input.value = ''; 
             error.classList.add('hidden'); 
-            input.focus();
+            updateBodyScroll();
+            requestAnimationFrame(() => input.focus());
         };
 
-        window.closeAdmin = function() { document.getElementById('admin-modal').classList.add('hidden'); };
+        window.closeAdmin = function() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+            updateBodyScroll();
+            if (adminReturnFocus instanceof HTMLElement) adminReturnFocus.focus();
+            adminReturnFocus = null;
+        };
         window.handleEnter = function(e) { if (e.key === 'Enter') checkAdmin(); };
 
         window.checkAdmin = function() {
@@ -830,7 +1056,9 @@
             if (input.value === 'dario') {
                 document.getElementById('admin-login').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('admin-modal').setAttribute('aria-labelledby', 'admin-dashboard-title');
                 switchAdminTab('prices');
+                requestAnimationFrame(() => document.getElementById('tab-btn-prices').focus());
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
                 input.classList.add('border-red-500');
@@ -848,12 +1076,16 @@
                 statsContent.classList.add('hidden');
                 btnPrices.className = "flex-1 py-3 px-4 font-bold text-sm text-brand-dark border-b-2 border-brand-primary bg-white flex items-center justify-center gap-2";
                 btnStats.className = "flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2";
+                btnPrices.setAttribute('aria-selected', 'true');
+                btnStats.setAttribute('aria-selected', 'false');
                 renderAdminProducts();
             } else {
                 pricesContent.classList.add('hidden');
                 statsContent.classList.remove('hidden');
                 btnStats.className = "flex-1 py-3 px-4 font-bold text-sm text-brand-dark border-b-2 border-brand-primary bg-white flex items-center justify-center gap-2";
                 btnPrices.className = "flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2";
+                btnStats.setAttribute('aria-selected', 'true');
+                btnPrices.setAttribute('aria-selected', 'false');
                 renderStatsRanking();
             }
         };
@@ -864,10 +1096,10 @@
             products.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col md:flex-row items-center gap-4';
-                const priceValue = p.price ? p.price : '';
+                const priceValue = hasValidPrice(p.price) ? formatPrice(p.price) : '';
                 item.innerHTML = `
                     <div class="w-12 h-12 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                        <img src="tarjeta${p.id}.1.jpg" onerror="this.src='https://placehold.co/100'" class="w-full h-full object-cover">
+                        <img src="tarjeta${p.id}.1.jpg" alt="${p.name}" onerror="this.src='https://placehold.co/100'" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-grow text-center md:text-left">
                         <h4 class="font-bold text-gray-800 text-sm">${p.name}</h4>
@@ -875,8 +1107,8 @@
                     </div>
                     <div class="flex items-center gap-2 w-full md:w-auto">
                         <span class="text-gray-500 font-bold">$</span>
-                        <input type="text" id="price-input-${p.id}" value="${priceValue}" placeholder="Sin precio" class="w-full md:w-28 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-brand-primary focus:outline-none font-bold text-gray-800">
-                        <button onclick="savePrice(${p.id}, event)" class="bg-brand-primary text-white px-4 py-2 rounded hover:bg-brand-dark transition-colors">
+                        <input type="text" inputmode="numeric" id="price-input-${p.id}" value="${priceValue}" placeholder="Sin precio" class="w-full md:w-28 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-brand-primary focus:outline-none font-bold text-gray-800">
+                        <button onclick="savePrice(${p.id}, event)" aria-label="Guardar precio de ${p.name}" class="bg-brand-primary text-white px-4 py-2 rounded hover:bg-brand-dark transition-colors">
                             <i class="fa-solid fa-floppy-disk"></i>
                         </button>
                     </div>
@@ -912,7 +1144,7 @@
                         </div>
                         <div class="text-right">
                             <span class="text-base font-bold text-brand-dark font-display">${count}</span>
-                            <span class="text-xs text-gray-500 block">unidades pedidas</span>
+                            <span class="text-xs text-gray-500 block">unidades solicitadas</span>
                         </div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
@@ -924,8 +1156,19 @@
         }
 
         window.savePrice = async function(id, event) {
-            const newPrice = document.getElementById(`price-input-${id}`).value;
+            const input = document.getElementById(`price-input-${id}`);
+            const rawPrice = input.value.trim();
+            const newPrice = rawPrice === '' ? null : parsePriceNumber(rawPrice);
             const btn = event ? event.currentTarget : null;
+
+            if (rawPrice !== '' && newPrice === null) {
+                input.classList.add('border-red-500', 'focus:ring-red-500');
+                input.focus();
+                alert('Ingresá un precio numérico mayor que cero. Ejemplo: 38000, 38.000 o 38.000,50. Dejá el campo vacío para mostrar Consultar precio.');
+                return;
+            }
+
+            input.classList.remove('border-red-500', 'focus:ring-red-500');
             
             try {
                 await setDoc(doc(db, "products", id.toString()), {

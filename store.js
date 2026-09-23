@@ -1,5 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, onSnapshot, increment, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 
         // Configuración Firebase
         const firebaseConfig = {
@@ -11,8 +10,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
             appId: "1:114574548383:web:f1c62e20311c35c01571aa"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        let db, collection, doc, setDoc, onSnapshot, increment, writeBatch;
+        let siteMetrics = {whatsappClicks:0, checkoutClicks:0};
 
         // --- DATOS ESTÁTICOS DE PRODUCTOS ---
         let products = [
@@ -124,14 +123,25 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         // --- SINCRONIZACIÓN FIREBASE EN TIEMPO REAL ---
+        async function connectStore() {
+            try {
+                const [appSDK, dataSDK] = await Promise.all([
+                    import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'),
+                    import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js')
+                ]);
+                ({ collection, doc, setDoc, onSnapshot, increment, writeBatch } = dataSDK);
+                db = dataSDK.getFirestore(appSDK.initializeApp(firebaseConfig));
         onSnapshot(collection(db, "products"), (snapshot) => {
-            products.forEach(product => { product.price = null; });
+            siteMetrics = {whatsappClicks:0, checkoutClicks:0};
+            products.forEach(product => { product.price = null; product.whatsappClicks = 0; });
             snapshot.forEach((docSnap) => {
                 const data = docSnap.data();
+                if (docSnap.id === 'site-metrics') siteMetrics = {whatsappClicks:Number(data.whatsappClicks)||0, checkoutClicks:Number(data.checkoutClicks)||0};
                 const localProduct = products.find(p => p.id.toString() === docSnap.id);
                 if (localProduct) {
                     localProduct.price = parsePriceNumber(data.price);
                     if (data.ordersCount !== undefined) localProduct.ordersCount = data.ordersCount;
+                    localProduct.whatsappClicks = Number(data.whatsappClicks) || 0;
                 }
             });
 
@@ -148,6 +158,20 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
             setFirestoreStatus('error');
             showToast('No pudimos actualizar los productos. Revisá tu conexión e intentá nuevamente.');
         });
+
+
+                window.vitalcoreRecordInquiry = async (id, kind, count) => {
+                    if (!['whatsappClicks','checkoutClicks'].includes(kind)) throw new Error('Tipo de consulta inválido');
+                    if (id !== 'site' && !products.some(p => String(p.id) === id)) throw new Error('Producto inválido');
+                    if (!Number.isInteger(count) || count < 1 || count > 1000) throw new Error('Cantidad inválida');
+                    await setDoc(doc(db, 'products', id === 'site' ? 'site-metrics' : id), { [kind]: increment(count) }, {merge:true});
+                };
+                window.dispatchEvent(new Event('vitalcore:ready'));
+            } catch (error) {
+                console.warn('No se pudieron cargar los precios:', error);
+                setFirestoreStatus('error');
+            }
+        }
 
         // --- CARRITO DE COMPRAS ---
         let cartReturnFocus = null;
@@ -263,7 +287,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
                 itemRow.className = 'bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between gap-3';
                 itemRow.innerHTML = `
                     <div class="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
-                        <img src="tarjeta${item.id}.1.jpg" alt="${item.name}" onerror="this.src='https://placehold.co/100'" class="w-full h-full object-cover">
+                        <img src="assets/images/product-${item.id}-1.webp" alt="${item.name}" onerror="this.hidden=true" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-grow min-w-0">
                         <h4 class="font-bold text-gray-800 text-xs truncate">${item.name}</h4>
@@ -337,6 +361,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
                 return;
             }
 
+            window.vitalcoreTrackConsultation?.({ source: 'checkout', kind: 'checkoutClicks', productId: 'site' });
             showToast('¡Pedido abierto en WhatsApp! Revisalo antes de enviarlo.');
 
             // 3. Registrar la intención de pedido una sola vez y en una escritura atómica
@@ -368,140 +393,21 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
             }, 3000);
         }
 
-        // --- RENDERIZADO DE TARJETAS CARD FLIP 3D ---
-        const grid = document.getElementById('product-grid');
-
+        // Only update price/action slots. Keep static content, images and focus intact.
         window.renderProducts = function() {
-            grid.innerHTML = ''; 
-
-            const { category, brand, productId } = document.body.dataset;
-            const filtered = products.filter(p => (!category || p.category === category) && (!brand || p.brand === brand) && (!productId || p.id === Number(productId)));
-            if (productId) {
-                const product = filtered[0];
-                const price = document.getElementById('detail-price');
-                const action = document.getElementById('detail-action');
-                if (product && price && action) {
-                    price.textContent = hasValidPrice(product.price) ? '$' + formatPrice(product.price) : 'Consultar precio';
-                    action.innerHTML = hasValidPrice(product.price)
-                        ? '<button onclick="addToCart(' + product.id + ')" class="bg-brand-primary text-brand-dark font-bold px-6 py-3 rounded-lg">Agregar al carrito</button>'
-                        : '<a href="' + priceInquiryUrl(product) + '" target="_blank" rel="noopener noreferrer" class="bg-brand-primary text-brand-dark font-bold px-6 py-3 rounded-lg inline-block">Consultar por WhatsApp</a>';
-                }
-                return;
-            }
-
-            if (filtered.length === 0) {
-                 grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">No hay productos disponibles en esta categoría.</p>`;
-                 return;
-            }
-
-            filtered.forEach((product, index) => {
-                const cardContainer = document.createElement('div');
-                cardContainer.className = 'card-container h-[460px] w-full';
-                cardContainer.setAttribute('data-aos', 'fade-up');
-                cardContainer.setAttribute('data-aos-delay', (index % 4) * 100);
-
-                const image1 = `tarjeta${product.id}.1.jpg`;
-                const image2 = `tarjeta${product.id}.2.jpg`;
-                const fallbackImage = `https://placehold.co/600x600/f1f5f9/0f172a?text=${encodeURIComponent(product.name)}`;
-
-                const validPrice = hasValidPrice(product.price);
-                let priceDisplay = validPrice
-                    ? `$${formatPrice(product.price)}` 
-                    : '<span class="text-sm text-gray-400">Consultar precio</span>';
-
-                cardContainer.innerHTML = `
-                    <div class="card-inner hover-flip rounded-xl shadow-lg border border-gray-100 bg-white" id="card-inner-${product.id}">
-                        
-                        <!-- FRENTE DE LA TARJETA -->
-                        <div class="card-front bg-white flex flex-col justify-between p-5" aria-hidden="false">
-                            <div>
-                                <div class="relative h-52 w-full bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
-                                    <span class="absolute top-2 left-2 bg-brand-dark text-brand-primary text-[10px] font-bold px-2.5 py-1 rounded-full z-10 uppercase tracking-wide">
-                                        ${product.brand}
-                                    </span>
-                                    <button type="button" onclick="flipCard(${product.id}, event)" aria-label="Ver dorso de ${product.name}" class="absolute top-2 right-2 bg-white/90 hover:bg-white text-brand-dark p-2 rounded-full shadow-md z-10 text-xs transition-transform transform hover:scale-110" title="Ver Dorso">
-                                        <i class="fa-solid fa-rotate"></i>
-                                    </button>
-                                    <img src="${image1}" 
-                                         alt="${product.name} - Frente" 
-                                         loading="lazy" 
-                                         width="300" 
-                                         height="208" 
-                                         class="w-full h-full object-contain p-2"
-                                         onerror="this.onerror=null; this.src='${fallbackImage}';">
-                                </div>
-                                <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1"><a href="${categoryUrl(product.category)}" class="hover:underline">${product.category}</a></div>
-                                <h3 class="text-base font-bold text-gray-800 mb-1 line-clamp-1"><a href="${productUrl(product)}" class="underline decoration-brand-primary underline-offset-4">${product.name}</a></h3>
-                                <p class="text-gray-500 text-xs line-clamp-2">${product.description}</p>
-                            </div>
-
-                            <div class="flex items-center justify-between pt-3 border-t border-gray-100 mt-2">
-                                <span class="text-xl font-display font-bold text-brand-dark">${priceDisplay}</span>
-                                ${validPrice ? `<button onclick="addToCart(${product.id})"
-                                        class="${validPrice ? 'bg-brand-primary hover:bg-brand-dark text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} px-3.5 py-2 rounded-lg transition-colors text-xs font-bold uppercase flex items-center gap-1.5 shadow-sm">
-                                    <i class="fa-solid fa-cart-plus text-sm"></i> Agregar
-                                </button>` : `<a href="${priceInquiryUrl(product)}" target="_blank" rel="noopener noreferrer" aria-label="Consultar precio de ${product.name} por WhatsApp" class="bg-brand-primary hover:bg-brand-dark text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>`}
-                            </div>
-                        </div>
-
-                        <!-- DORSO DE LA TARJETA -->
-                        <div class="card-back bg-slate-900 text-white flex flex-col justify-between p-5" aria-hidden="true" inert>
-                            <div>
-                                <div class="relative h-52 w-full bg-black/30 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
-                                    <span class="absolute top-2 left-2 bg-brand-primary text-brand-dark text-[10px] font-bold px-2.5 py-1 rounded-full z-10 uppercase tracking-wide">
-                                        Información / Dorso
-                                    </span>
-                                    <button type="button" onclick="flipCard(${product.id}, event)" aria-label="Volver al frente de ${product.name}" class="absolute top-2 right-2 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full shadow-md z-10 text-xs transition-transform transform hover:scale-110" title="Ver Frente">
-                                        <i class="fa-solid fa-rotate"></i>
-                                    </button>
-                                    <img src="${image2}" 
-                                         alt="${product.name} - Dorso" 
-                                         loading="lazy" 
-                                         width="300" 
-                                         height="208" 
-                                         class="w-full h-full object-contain p-2"
-                                         onerror="this.onerror=null; this.src='${fallbackImage}';">
-                                </div>
-                                <h3 class="text-base font-bold text-brand-primary mb-1"><a href="${productUrl(product)}" class="underline decoration-brand-primary underline-offset-4">${product.name}</a></h3>
-                                <p class="text-gray-300 text-xs line-clamp-3">${product.description}</p>
-                            </div>
-
-                            <div class="pt-3 border-t border-gray-700 mt-2 flex flex-col gap-2">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-gray-400">Precio actual:</span>
-                                    <span class="text-lg font-display font-bold text-brand-accent">${priceDisplay}</span>
-                                </div>
-                                ${validPrice ? `<button onclick="addToCart(${product.id})"
-                                        class="${validPrice ? 'bg-brand-primary hover:bg-brand-accent text-brand-dark' : 'bg-gray-700 text-gray-500 cursor-not-allowed'} w-full py-2.5 rounded-lg font-bold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-cart-plus text-base"></i> Agregar al Carrito
-                                </button>` : `<a href="${priceInquiryUrl(product)}" target="_blank" rel="noopener noreferrer" class="bg-brand-primary hover:bg-brand-accent text-brand-dark w-full py-2.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2"><i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp</a>`}
-                            </div>
-                        </div>
-
-                    </div>
-                `;
-                grid.appendChild(cardContainer);
+            products.forEach(product => {
+                document.querySelectorAll('[data-product-price="' + product.id + '"]').forEach(node => {
+                    node.textContent = hasValidPrice(product.price) ? '$' + formatPrice(product.price) : 'Consultar precio';
+                });
+                document.querySelectorAll('[data-product-action="' + product.id + '"]').forEach(node => {
+                    const state = hasValidPrice(product.price) ? 'buy' : 'inquiry';
+                    if (node.dataset.state === state) return;
+                    node.dataset.state = state;
+                    node.innerHTML = state === 'buy'
+                        ? '<button onclick="addToCart(' + product.id + ')" class="w-full bg-brand-dark text-white font-bold px-4 py-3 rounded-lg">Agregar al carrito</button>'
+                        : '<a data-product-id="' + product.id + '" data-consultation-source="price" href="' + priceInquiryUrl(product) + '" target="_blank" rel="noopener noreferrer" class="block text-center bg-brand-dark text-white font-bold px-4 py-3 rounded-lg">Consultar por WhatsApp</a>';
+                });
             });
-
-            setTimeout(() => { AOS.refresh(); }, 100);
-        };
-
-        window.flipCard = function(id, event) {
-            if (event) event.stopPropagation();
-            const cardInner = document.getElementById(`card-inner-${id}`);
-            if (cardInner) {
-                const isFlipped = cardInner.classList.toggle('is-flipped');
-                const front = cardInner.querySelector('.card-front');
-                const back = cardInner.querySelector('.card-back');
-
-                front.setAttribute('aria-hidden', String(isFlipped));
-                back.setAttribute('aria-hidden', String(!isFlipped));
-                front.toggleAttribute('inert', isFlipped);
-                back.toggleAttribute('inert', !isFlipped);
-
-                const targetButton = (isFlipped ? back : front).querySelector('button');
-                requestAnimationFrame(() => targetButton?.focus());
-            }
         };
 
         window.toggleMenu = function(forceOpen) {
@@ -651,7 +557,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
                 const priceValue = hasValidPrice(p.price) ? formatPrice(p.price) : '';
                 item.innerHTML = `
                     <div class="w-12 h-12 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                        <img src="tarjeta${p.id}.1.jpg" alt="${p.name}" onerror="this.src='https://placehold.co/100'" class="w-full h-full object-cover">
+                        <img src="assets/images/product-${p.id}-1.webp" alt="${p.name}" onerror="this.hidden=true" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-grow text-center md:text-left">
                         <h4 class="font-bold text-gray-800 text-sm">${p.name}</h4>
@@ -670,6 +576,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         function renderStatsRanking() {
+            const report = document.getElementById('inquiry-report');
+            if (report) {
+                const clicks = products.reduce((sum, p) => sum + (p.whatsappClicks || 0), 0);
+                report.innerHTML = '<h4 class="font-bold">Consultas por WhatsApp</h4><p class="text-sm my-2">Clics de intención de contacto; no son mensajes enviados ni ventas. Conteos agregados, sin nombres ni contenido de mensajes.</p><p>Desde productos: <strong>' + clicks + '</strong> · Contacto general: <strong>' + siteMetrics.whatsappClicks + '</strong> · Carritos abiertos: <strong>' + siteMetrics.checkoutClicks + '</strong></p><p class="text-xs mt-2">Pendientes de sincronizar en este navegador: ' + (window.vitalcorePendingInquiries?.() || 0) + '</p><ul class="text-sm mt-3 space-y-1">' + [...products].sort((a,b) => (b.whatsappClicks||0)-(a.whatsappClicks||0)).map(p => '<li>' + p.name + ' (' + p.brand + '): <strong>' + (p.whatsappClicks||0) + '</strong></li>').join('') + '</ul>';
+            }
             const list = document.getElementById('stats-ranking-list');
             list.innerHTML = '';
 
@@ -696,7 +607,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
                         </div>
                         <div class="text-right">
                             <span class="text-base font-bold text-brand-dark font-display">${count}</span>
-                            <span class="text-xs text-gray-500 block">unidades solicitadas</span>
+                            <span class="text-xs text-gray-500 block">unidades en carritos</span>
                         </div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
@@ -748,5 +659,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
         document.addEventListener('DOMContentLoaded', () => {
              renderProducts();
              updateCartUI();
-             AOS.init({ duration: 800, once: true, offset: 100, easing: 'ease-out-cubic' });
+             const search = document.getElementById('catalog-search');
+             if (search) search.addEventListener('input', () => {
+                 const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+                 const query = normalize(search.value.trim());
+                 let shown = 0;
+                 document.querySelectorAll('#product-grid [data-catalog-product]').forEach(card => {
+                     card.hidden = !normalize(card.dataset.search).includes(query);
+                     if (!card.hidden) shown++;
+                 });
+                 document.getElementById('search-status').textContent = shown ? shown + ' productos encontrados' : 'No encontramos coincidencias. Probá con otra marca o nombre.';
+             });
+             connectStore();
         });

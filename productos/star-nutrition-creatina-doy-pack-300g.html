@@ -10,160 +10,19 @@
     <title>Creatina Doy pack 300g — Star Nutrition | VitalCore</title>
     
     <!-- METADATOS PARA REDES SOCIALES (SEO & Open Graph) -->
-    <meta name="description" content="Formato refill económico. La misma creatina micronizada de siempre, 100% pura.">
+    <meta name="description" content="Creatina de Star Nutrition en Doy Pack de 300 g. Una presentación alternativa dentro de la categoría de creatinas para comparar antes de comprar.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Creatina Doy pack 300g — Star Nutrition | VitalCore">
-    <meta property="og:description" content="Formato refill económico. La misma creatina micronizada de siempre, 100% pura.">
+    <meta property="og:description" content="Creatina de Star Nutrition en Doy Pack de 300 g. Una presentación alternativa dentro de la categoría de creatinas para comparar antes de comprar.">
     <meta property="og:image" content="logo.jpg">
     <meta property="twitter:card" content="summary_large_image">
 
     <link rel="icon" href="logo.jpg" type="image/jpg">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- AOS Animation Library CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#1A4E40',    
-                            primary: '#5CAB7D', 
-                            accent: '#8BC34A',  
-                            light: '#F1F8E0',   
-                            sky: '#D1F2F9'      
-                        },
-                        slate: {
-                            50: '#F1F8E0',      
-                            800: '#212121',     
-                            900: '#1A4E40'      
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        display: ['Oswald', 'sans-serif'],
-                    },
-                    animation: {
-                        marquee: 'marquee 20s linear infinite',
-                        'marquee-mobile': 'marquee 10s linear infinite',
-                        'pulse-subtle': 'pulseSubtle 2s infinite',
-                    },
-                    keyframes: {
-                        marquee: {
-                            '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-100%)' },
-                        },
-                        pulseSubtle: {
-                            '0%, 100%': { boxShadow: '0 0 0 0 rgba(37, 211, 102, 0.6)' },
-                            '70%': { boxShadow: '0 0 0 15px rgba(37, 211, 102, 0)' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(to bottom, #D1F2F9, #F1F8E0);
-            color: #212121;
-            overflow-x: hidden; 
-        }
-        
-        .font-display {
-            font-family: 'Oswald', sans-serif;
-        }
-
-        .btn-energy {
-            position: relative;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 0 rgba(92, 171, 125, 0);
-        }
-        
-        .btn-energy:hover {
-            box-shadow: 0 0 20px rgba(139, 195, 74, 0.6), 0 0 40px rgba(139, 195, 74, 0.3);
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-            transform: translateY(-2px) scale(1.02);
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 130px; 
-        }
-        
-        #mobile-menu {
-            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-        }
-        .menu-hidden {
-            max-height: 0;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .menu-visible {
-            max-height: 400px;
-            opacity: 1;
-            pointer-events: auto;
-        }
-        
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* --- CARD FLIP 3D STYLES --- */
-        .card-container {
-            perspective: 1000px;
-        }
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-        .card-inner.is-flipped {
-            transform: rotateY(180deg);
-        }
-        @media (min-width: 1024px) {
-            .card-container:hover .card-inner.hover-flip {
-                transform: rotateY(180deg);
-            }
-        }
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 0.75rem;
-            overflow: hidden;
-        }
-        .card-back {
-            transform: rotateY(180deg);
-        }
-
-        /* Admin & Drawer Overlay */
-        .admin-modal-bg, .cart-overlay {
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
-        }
-    </style>
+    <link rel="stylesheet" href="assets/store.css">
 </head>
 <body class="text-slate-800 antialiased" data-product-id="20">
+    <a href="/productos/star-nutrition-creatina-doy-pack-300g.html#contenido" class="skip-link">Saltar al contenido</a>
 
     <!-- Navbar -->
     <nav class="bg-brand-dark/95 backdrop-blur-md text-white shadow-lg sticky top-0 z-40 transition-all duration-300 flex flex-col">
@@ -171,11 +30,11 @@
         <div class="bg-brand-accent text-brand-dark overflow-hidden py-1 relative z-40 border-b border-brand-dark/10">
             <div class="flex animate-marquee-mobile md:animate-marquee whitespace-nowrap">
                 <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-check-circle mr-1"></i> Asesoramiento Deportivo sin Cargo</span>
-                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i> Mejores Precios Garantizados</span>
-                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-truck-fast mr-1"></i> Envíos Rápidos a Todo el País</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i> Precios actualizados</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-truck-fast mr-1"></i> Consultá opciones de entrega</span>
                 <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-check-circle mr-1"></i> Asesoramiento Deportivo sin Cargo</span>
-                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i> Mejores Precios Garantizados</span>
-                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-truck-fast mr-1"></i> Envíos Rápidos a Todo el País</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i> Precios actualizados</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-truck-fast mr-1"></i> Consultá opciones de entrega</span>
             </div>
         </div>
 
@@ -189,9 +48,10 @@
             </a>
             
             <!-- Menu Desktop -->
-            <div class="hidden md:flex space-x-8 font-semibold text-sm uppercase tracking-wide items-center">
+            <div class="hidden lg:flex space-x-8 font-semibold text-sm uppercase tracking-wide items-center">
                 <a href="/#inicio" class="hover:text-brand-primary transition-colors py-2">Inicio</a>
                 <a href="/#catalogo" class="hover:text-brand-primary transition-colors py-2">Catálogo</a>
+                <a href="https://vitalcore-tienda.github.io/vitalcoretrainer/" class="hover:text-brand-primary transition-colors py-2">Entrenamiento</a>
                 <a href="/#beneficios" class="hover:text-brand-primary transition-colors py-2">Beneficios</a>
                 <a href="/#contacto" class="hover:text-brand-primary transition-colors py-2">Contacto</a>
             </div>
@@ -204,49 +64,56 @@
                 </button>
 
                 <!-- Botón Menú Móvil -->
-                <button id="menu-toggle-btn" onclick="toggleMenu()" class="md:hidden text-2xl text-brand-primary focus:outline-none p-2" aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false">
+                <button id="menu-toggle-btn" onclick="toggleMenu()" class="lg:hidden text-2xl text-brand-primary focus:outline-none p-2" aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false">
                     <i id="menu-icon" class="fa-solid fa-bars transition-transform duration-300"></i>
                 </button>
             </div>
         </div>
 
         <!-- Menu Movil -->
-        <div id="mobile-menu" aria-hidden="true" inert class="md:hidden bg-brand-dark border-t border-brand-primary/20 absolute w-full left-0 top-full shadow-2xl menu-hidden overflow-hidden z-40">
+        <div id="mobile-menu" aria-hidden="true" inert class="lg:hidden bg-brand-dark border-t border-brand-primary/20 absolute w-full left-0 top-full shadow-2xl menu-hidden overflow-hidden z-40">
             <div class="flex flex-col p-6 space-y-4 font-semibold text-center uppercase tracking-wide">
                 <a href="/#inicio" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-brand-primary transition-colors">Inicio</a>
                 <a href="/#catalogo" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Catálogo</a>
+                <a href="https://vitalcore-tienda.github.io/vitalcoretrainer/" class="block py-3 text-white">Entrenamiento</a>
                 <a href="/#beneficios" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Beneficios</a>
                 <a href="/#contacto" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Contacto</a>
             </div>
         </div>
     </nav>
 
-<main class="bg-slate-50 py-12"><div class="container mx-auto px-4 md:px-6">
+<main id="contenido" tabindex="-1" class="bg-slate-50 py-12"><div class="container mx-auto px-4 md:px-6">
         <nav aria-label="Ruta de navegación" class="text-sm"><a href="/#catalogo" class="underline">Catálogo</a> / <a href="categorias/creatinas.html" class="underline">Creatinas</a> / <span aria-current="page">Creatina Doy pack 300g</span></nav>
-        <article class="grid md:grid-cols-2 gap-8 mt-8"><div class="grid gap-4"><img src="tarjeta20.1.jpg" alt="Creatina Doy pack 300g — Frente" width="600" height="600" loading="lazy" class="w-full h-64 object-contain bg-white rounded-xl"></div><div>
+        <article id="catalogo" class="grid md:grid-cols-2 gap-8 mt-8"><div class="grid gap-4 content-start"><img src="assets/images/product-20-1.webp" alt="Creatina Doy pack 300g — Frente" width="640" height="640" loading="eager" fetchpriority="high" decoding="async" class="product-image w-full h-64 rounded-xl"><details><summary class="cursor-pointer underline py-3">Ver dorso del producto</summary><img src="assets/images/product-20-2.webp" alt="Creatina Doy pack 300g — Dorso" width="640" height="640" loading="lazy" decoding="async" class="product-image w-full h-64 rounded-xl"></details></div><div>
             <a href="marcas/star-nutrition.html" class="uppercase text-sm underline">Star Nutrition</a><h1 class="text-4xl font-display mt-3">Creatina Doy pack 300g</h1>
-            <p class="mt-6 text-gray-600 leading-relaxed">Formato refill económico. La misma creatina micronizada de siempre, 100% pura.</p><p class="mt-4">Categoría: <a href="categorias/creatinas.html" class="underline">Creatinas</a></p>
-            <p id="detail-price" aria-live="polite" class="text-2xl font-bold mt-8">Consultar precio</p><div id="detail-action" class="mt-4"><a href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Creatina%20Doy%20pack%20300g%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="bg-brand-primary font-bold px-6 py-3 rounded-lg inline-block">Consultar por WhatsApp</a></div>
-            <a href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Creatina%20Doy%20pack%20300g%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="block underline mt-6">Asesoramiento por WhatsApp</a>
+            <p class="mt-6 text-gray-600 leading-relaxed">Creatina de Star Nutrition en Doy Pack de 300 g. Una presentación alternativa dentro de la categoría de creatinas para comparar antes de comprar.</p><p class="mt-4">Categoría: <a href="categorias/creatinas.html" class="underline">Creatinas</a></p>
+            <dl class="mt-5 border-y py-4"><dt class="font-bold">Presentación</dt><dd>Doy Pack de 300 g</dd><dt class="font-bold mt-3">Disponibilidad</dt><dd>A confirmar al realizar la consulta.</dd></dl>
+            <p id="detail-price" data-product-price="20" aria-live="polite" class="text-2xl font-bold mt-8">Consultar precio</p><div id="detail-action" data-product-action="20" data-state="inquiry" class="mt-4"><a data-product-id="20" data-consultation-source="product" href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Creatina%20Doy%20pack%20300g%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="bg-brand-dark text-white font-bold px-6 py-3 rounded-lg inline-block">Consultar por WhatsApp</a></div>
+            <p class="text-sm text-gray-600 mt-3">Confirmamos el precio, la variante y las opciones de entrega por WhatsApp antes de cerrar tu pedido.</p>
+            <a data-product-id="20" data-consultation-source="advice" href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Creatina%20Doy%20pack%20300g%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="block underline mt-6">Consultar detalles de este producto</a>
         </div></article><div id="product-grid" hidden></div>
-        <section class="mt-12"><h2 class="text-2xl font-display mb-6">Más productos para explorar</h2><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"><article class="bg-white rounded-xl border p-5 flex flex-col gap-3"><a href="productos/star-nutrition-creatina-monohidratada-300g.html"><h3 class="font-display text-xl underline mt-3">Creatina Monohidratada 300g</h3></a><a href="categorias/creatinas.html" class="text-sm underline">Creatinas</a><p class="text-sm text-gray-600">Star Nutrition</p><p class="text-sm">Micronizada y 100% pura. Llevá tu fuerza, resistencia y potencia explosiva al siguiente nivel.</p><p>Consultar precio</p><a href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Creatina%20Monohidratada%20300g%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="font-bold underline">Consultar por WhatsApp</a></article>
-<article class="bg-white rounded-xl border p-5 flex flex-col gap-3"><a href="productos/star-nutrition-nitro-whey.html"><img src="tarjeta1.1.jpg" alt="Nitro Whey — Frente" width="600" height="600" loading="lazy" class="w-full h-64 object-contain bg-white rounded-xl"><h3 class="font-display text-xl underline mt-3">Nitro Whey</h3></a><a href="categorias/proteinas.html" class="text-sm underline">Proteínas</a><p class="text-sm text-gray-600">Star Nutrition</p><p class="text-sm">Blend de máxima pureza y rápida absorción. La fórmula definitiva para potenciar tu recuperación y crecimiento magro.</p><p>Consultar precio</p><a href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Nitro%20Whey%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="font-bold underline">Consultar por WhatsApp</a></article>
-<article class="bg-white rounded-xl border p-5 flex flex-col gap-3"><a href="productos/star-nutrition-whey-protein-platinum-2lb.html"><h3 class="font-display text-xl underline mt-3">Whey Protein Platinum 2lb</h3></a><a href="categorias/proteinas.html" class="text-sm underline">Proteínas</a><p class="text-sm text-gray-600">Star Nutrition</p><p class="text-sm">Concentrado de suero 100% premium. Rica en BCAAs para un desarrollo muscular sólido y un sabor increíble.</p><p>Consultar precio</p><a href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Whey%20Protein%20Platinum%202lb%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="font-bold underline">Consultar por WhatsApp</a></article></div></section></div></main>
+        <section class="mt-10 max-w-3xl"><h2 class="text-2xl font-display mb-4">Qué comparar antes de elegir</h2><p class="leading-relaxed">Revisá también la Creatina Monohidratada 300 g del catálogo. Podemos ayudarte a confirmar la presentación de cada producto y su precio vigente.</p>
+        <h2 class="text-2xl font-display mt-8 mb-4">Cómo hacer tu pedido</h2><ol class="list-decimal pl-6 space-y-2"><li>Consultá la variante y la cantidad que buscás.</li><li>Si hay precio publicado, agregá el producto al carrito y abrí el pedido en WhatsApp.</li><li>Confirmá disponibilidad, forma de pago y costo de entrega con VitalCore.</li></ol>
+        <h2 class="text-2xl font-display mt-8 mb-4">Preguntas de compra</h2><details class="border-b py-4"><summary class="font-bold cursor-pointer">¿Qué pasa si dice Consultar precio?</summary><p class="mt-3">Todavía no hay un precio válido publicado para esta presentación. El botón abre una consulta que identifica el producto; no se agrega un importe de cero al carrito.</p></details><details class="border-b py-4"><summary class="font-bold cursor-pointer">¿Abrir WhatsApp confirma la compra?</summary><p class="mt-3">No. Podés revisar el mensaje antes de enviarlo. Coordinamos los detalles y la disponibilidad antes de confirmar el pedido.</p></details>
+        <p class="mt-6">¿También buscás entrenamiento? <a href="https://vitalcore-tienda.github.io/vitalcoretrainer/" class="underline font-bold">Conocé los planes de VitalCore Trainer</a>.</p></section>
+        <section class="mt-12"><h2 class="text-2xl font-display mb-6">Más productos para explorar</h2><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"><article data-catalog-product="4" data-search="Creatina Monohidratada 300g Star Nutrition Creatinas" class="bg-white rounded-xl border p-5 flex flex-col gap-3"><a href="productos/star-nutrition-creatina-monohidratada-300g.html"><img src="assets/images/product-4-1.webp" alt="Creatina Monohidratada 300g — Frente" width="640" height="640" loading="lazy" decoding="async" class="product-image w-full h-64 rounded-xl"><h3 class="font-display text-xl underline mt-3">Creatina Monohidratada 300g</h3></a><a href="categorias/creatinas.html" class="text-sm underline">Creatinas</a><a href="marcas/star-nutrition.html" class="text-sm text-gray-600 underline">Star Nutrition</a><p class="text-sm">Creatina Monohidratada de Star Nutrition en presentación de 300 g. También podés explorar la opción Doy Pack de la misma marca.</p><p data-product-price="4" class="font-bold mt-auto" aria-live="polite">Consultar precio</p><div data-product-action="4" data-state="inquiry"><a data-product-id="4" data-consultation-source="catalog" href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Creatina%20Monohidratada%20300g%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="block text-center bg-brand-dark text-white font-bold px-4 py-3 rounded-lg">Consultar por WhatsApp</a></div><a href="productos/star-nutrition-creatina-monohidratada-300g.html" class="underline text-sm">Ver ficha y opciones</a></article>
+<article data-catalog-product="1" data-search="Nitro Whey Star Nutrition Proteínas" class="bg-white rounded-xl border p-5 flex flex-col gap-3"><a href="productos/star-nutrition-nitro-whey.html"><img src="assets/images/product-1-1.webp" alt="Nitro Whey — Frente" width="640" height="640" loading="lazy" decoding="async" class="product-image w-full h-64 rounded-xl"><h3 class="font-display text-xl underline mt-3">Nitro Whey</h3></a><a href="categorias/proteinas.html" class="text-sm underline">Proteínas</a><a href="marcas/star-nutrition.html" class="text-sm text-gray-600 underline">Star Nutrition</a><p class="text-sm">Nitro Whey de Star Nutrition. Compará esta opción de proteína con las presentaciones Platinum y Doy Pack del catálogo y consultá cuál está disponible para tu pedido.</p><p data-product-price="1" class="font-bold mt-auto" aria-live="polite">Consultar precio</p><div data-product-action="1" data-state="inquiry"><a data-product-id="1" data-consultation-source="catalog" href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Nitro%20Whey%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="block text-center bg-brand-dark text-white font-bold px-4 py-3 rounded-lg">Consultar por WhatsApp</a></div><a href="productos/star-nutrition-nitro-whey.html" class="underline text-sm">Ver ficha y opciones</a></article>
+<article data-catalog-product="2" data-search="Whey Protein Platinum 2lb Star Nutrition Proteínas" class="bg-white rounded-xl border p-5 flex flex-col gap-3"><a href="productos/star-nutrition-whey-protein-platinum-2lb.html"><img src="assets/images/product-2-1.webp" alt="Whey Protein Platinum 2lb — Frente" width="640" height="640" loading="lazy" decoding="async" class="product-image w-full h-64 rounded-xl"><h3 class="font-display text-xl underline mt-3">Whey Protein Platinum 2lb</h3></a><a href="categorias/proteinas.html" class="text-sm underline">Proteínas</a><a href="marcas/star-nutrition.html" class="text-sm text-gray-600 underline">Star Nutrition</a><p class="text-sm">Whey Protein Platinum de Star Nutrition en presentación de 2 lb. Una opción del catálogo de proteínas que podés consultar junto con su versión Doy Pack.</p><p data-product-price="2" class="font-bold mt-auto" aria-live="polite">Consultar precio</p><div data-product-action="2" data-state="inquiry"><a data-product-id="2" data-consultation-source="catalog" href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Whey%20Protein%20Platinum%202lb%20(Star%20Nutrition)." target="_blank" rel="noopener noreferrer" class="block text-center bg-brand-dark text-white font-bold px-4 py-3 rounded-lg">Consultar por WhatsApp</a></div><a href="productos/star-nutrition-whey-protein-platinum-2lb.html" class="underline text-sm">Ver ficha y opciones</a></article></div></section></div></main>
     <!-- Beneficios -->
     <section id="beneficios" class="py-12 md:py-16 bg-white">
         <div class="container mx-auto px-4 md:px-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 text-center">
-                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white" data-aos="fade-up" data-aos-delay="0">
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white">
                     <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-certificate"></i></div>
                     <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Calidad Garantizada</h3>
                     <p class="text-sm md:text-base text-gray-600">Productos originales y certificados directos de los distribuidores oficiales.</p>
                 </div>
-                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white" data-aos="fade-up" data-aos-delay="150">
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white">
                     <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-truck-fast"></i></div>
                     <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Envíos Rápidos</h3>
                     <p class="text-sm md:text-base text-gray-600">Despachamos tu pedido rápidamente para que no frenes tu ritmo de entrenamiento.</p>
                 </div>
-                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white" data-aos="fade-up" data-aos-delay="300">
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white">
                     <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-tag"></i></div>
                     <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Mejores Precios</h3>
                     <p class="text-sm md:text-base text-gray-600">Precios competitivos y ofertas exclusivas en suplementación de primera línea.</p>
@@ -256,7 +123,7 @@
     </section>
 
     <!-- Banner Asesoramiento -->
-    <section class="py-12 md:py-16 bg-brand-primary relative overflow-hidden" data-aos="fade-up">
+    <section class="py-12 md:py-16 bg-brand-primary relative overflow-hidden">
         <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white opacity-10 rounded-full pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-brand-dark opacity-10 rounded-full pointer-events-none"></div>
         <div class="container mx-auto px-4 md:px-6 text-center relative z-10">
@@ -270,6 +137,7 @@
 
     <!-- Footer -->
     <footer id="contacto" class="bg-brand-dark text-white py-10 md:py-12 border-t border-brand-primary/20 pb-24 md:pb-12">
+        <div class="container mx-auto px-6 pb-8 text-center"><h2 class="text-xl font-bold mb-3">Entrenamiento y suplementos en un mismo lugar</h2><p class="mb-3">Conocé las propuestas de entrenamiento personalizado de VitalCore Trainer.</p><a href="https://vitalcore-tienda.github.io/vitalcoretrainer/" class="underline font-bold">Explorar planes de entrenamiento</a></div>
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6">
                 <div>
@@ -383,7 +251,7 @@
                     <i class="fa-solid fa-pen-to-square"></i> Precios
                 </button>
                 <button id="tab-btn-stats" role="tab" aria-selected="false" aria-controls="tab-content-stats" onclick="switchAdminTab('stats')" class="flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-fire text-orange-500"></i> Productos Más Pedidos
+                    <i class="fa-solid fa-fire text-orange-500"></i> Consultas y carritos
                 </button>
             </div>
 
@@ -395,10 +263,11 @@
                 <div id="tab-content-stats" role="tabpanel" aria-labelledby="tab-btn-stats" class="hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
                         <h3 class="text-lg font-bold text-brand-dark font-display mb-1 flex items-center gap-2">
-                            <i class="fa-solid fa-trophy text-amber-500"></i> Ranking de Demanda por Clientes
+                            <i class="fa-solid fa-trophy text-amber-500"></i> Interés en productos
                         </h3>
-                        <p class="text-xs text-gray-500 mb-6">Muestra la cantidad acumulada de unidades incluidas en pedidos iniciados por WhatsApp.</p>
+                        <p class="text-xs text-gray-500 mb-6">Muestra unidades incluidas en carritos abiertos por WhatsApp. No confirma mensajes enviados ni ventas.</p>
                         
+                        <section id="inquiry-report" class="bg-white p-4 rounded-lg border mb-5" aria-live="polite"></section>
                         <div id="stats-ranking-list" class="space-y-4"></div>
                     </div>
                 </div>
@@ -412,8 +281,8 @@
     </div>
 
     <!-- LIBRERÍAS EXTERNAS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+    <script defer src="metrics.js"></script>
     <script type="module" src="store.js"></script>
 </body>
 </html>

@@ -1,72 +1,64 @@
 const fs = require('node:fs');
+const path = require('node:path');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
+const {outputs, templateFiles} = require('./build-pages.cjs');
+process.chdir(__dirname);
 const source = fs.readFileSync('store.js', 'utf8');
 const products = vm.runInNewContext(source.match(/let products = (\[[\s\S]*?\n        \]);/)[1]);
-const files = ['index.html', ...['productos','categorias','marcas'].flatMap(dir => fs.readdirSync(dir).map(name => dir+'/'+name))];
-assert.equal(files.length, 27);
-const sitemap = fs.readFileSync('sitemap.xml', 'utf8');
-const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
-const expectedUrls = files.map(file => 'https://vitalcore.com.ar/' + (file === 'index.html' ? '' : file));
-assert.deepEqual([...sitemapUrls].sort(), expectedUrls.sort(), 'El sitemap debe incluir cada página pública una sola vez');
-assert.ok(!sitemapUrls.some(url => url.includes('/Vitalcore/') || url.includes('?') || url.includes('#')));
-const robots = fs.readFileSync('robots.txt', 'utf8');
-assert.ok(robots.includes('User-agent: *\nAllow: /'));
-assert.ok(robots.includes('Sitemap: https://vitalcore.com.ar/sitemap.xml'));
-assert.ok(!robots.includes('Disallow:'), 'Los rastreadores deben poder seguir las redirecciones');
-for(const file of files) {
- const html=fs.readFileSync(file,'utf8');
- assert.equal((html.match(/<h1\b/g)||[]).length,1,file);
- assert.equal((html.match(/<meta name="robots" content="index, follow">/g)||[]).length, 1, file);
- const canonicals = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)];
- assert.equal(canonicals.length, 1, file);
- assert.equal(new URL(canonicals[0][1], 'https://example.test').pathname, file === 'index.html' ? '/' : '/' + file);
- assert.equal((html.match(/<base href="\/">/g)||[]).length, 1, file);
- assert.ok(!html.includes('href="index.html#'), file);
- assert.equal(new URL(canonicals[0][1]).origin, 'https://vitalcore.com.ar');
- const legacy = fs.readFileSync('Vitalcore/' + file, 'utf8');
- const target = canonicals[0][1];
- assert.ok(legacy.includes(`content="0; url=${target}"`), file);
- assert.ok(!legacy.includes('store.js'), file);
- let destination;
- const location = {pathname:'/Vitalcore/' + file, search:'?origen=prueba', hash:'#catalogo', replace(url){destination=url}};
- vm.runInNewContext(legacy.match(/<script>([\s\S]*?)<\/script>/)[1], {location});
- assert.equal(destination, target + '?origen=prueba#catalogo');
- const guard = html.match(/<!-- legacy-route --><script>([\s\S]*?)<\/script>/)[1];
- destination = null;
- location.pathname = file === 'index.html' ? '/' : '/' + file;
- vm.runInNewContext(guard, {location});
- assert.equal(destination, null, 'La URL oficial no debe redirigir');
- for(const [,url] of html.matchAll(/href="([^"]+)"/g)) {
-  if(/^(https?:|#|\.\.\/)/.test(url)) continue;
-  const target=url.split('#')[0].replace(/^\//, '') || 'index.html';
-  if(target==='logo.jpg') continue; // Existing missing logo, unrelated to catalog routes.
-  assert.ok(fs.existsSync(target), `${file}: ${target}`);
- }
+const slug = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const productPath = p => 'productos/' + slug(p.brand + '-' + p.name) + '.html';
+const ids = new Set(products.map(p => String(p.id)));
+const expected = outputs();
+assert.deepEqual([...outputs()], [...expected], 'La generación debe ser determinista');
+for (const [file, text] of expected) assert.equal(fs.readFileSync(file, 'utf8'), text, `Regenerar ${file}`);
+const files = templateFiles();
+assert.equal(files.filter(f => f.startsWith('productos/')).length, products.length);
+for (const p of products) assert.ok(files.includes(productPath(p)), `Falta ficha para ${p.name}`);
+for (const file of files) {
+  const html = expected.get(file);
+  assert.equal((html.match(/<h1\b/g) || []).length, 1, file);
+  assert.equal((html.match(/rel="canonical"/g) || []).length, 1, file);
+  assert.equal((html.match(/name="robots" content="index, follow"/g) || []).length, 1, file);
+  assert.ok(html.includes('assets/store.css') && html.includes('metrics.js') && html.includes('store.js'), file);
+  assert.ok(!html.includes('cdn.tailwindcss.com'), file);
+  for (const [, url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
+    if (/^(https?:|data:|mailto:|tel:|#)/.test(url)) continue;
+    const local = decodeURIComponent(url.split(/[?#]/)[0]).replace(/^\//, '') || 'index.html';
+    assert.ok(fs.existsSync(local), `${file}: recurso inexistente ${url}`);
+  }
+  const prices = [...html.matchAll(/data-product-price="(\d+)"/g)].map(m => m[1]).sort();
+  const actions = [...html.matchAll(/data-product-action="(\d+)"/g)].map(m => m[1]).sort();
+  assert.deepEqual(prices, actions, `${file}: precios sin botón correspondiente`);
+  for (const id of prices) assert.ok(ids.has(id), `${file}: producto desconocido ${id}`);
+  for (const [, image] of html.matchAll(/src="([^"]*product-[^"]+)"/g)) assert.ok(image.endsWith('.webp'), image);
+  if (!file.startsWith('productos/')) assert.ok(html.includes('id="catalog-search"'), file);
+  if (file.startsWith('productos/')) {
+    const p = products.find(p => productPath(p) === file);
+    assert.ok(html.includes(`data-product-price="${p.id}"`) && html.includes(`data-product-action="${p.id}"`), file);
+    assert.ok(html.includes('fetchpriority="high"'), file);
+  }
 }
-const elements=new Map();
-const element=()=>({innerHTML:'',children:[],style:{},classList:{add(){},remove(){},contains(){return true},toggle(){}},setAttribute(){},appendChild(child){this.children.push(child)},focus(){}});
-const context={console,localStorage:{getItem:()=>null,setItem(){}},setTimeout(){},requestAnimationFrame(){},initializeApp(){},getFirestore(){},collection(){},onSnapshot(ref,fn){context.snapshot=fn},AOS:{refresh(){},init(){}},document:{body:{dataset:{}},getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},createElement:element,addEventListener(){} }};
-context.window=context;
-vm.createContext(context);
-vm.runInContext(source.replace(/^\s*import .*;$/gm,''),context);
-for(const p of products) {
- context.document.body.dataset={productId:String(p.id)};
- context.snapshot([{id:String(p.id),data:()=>({price:38000.5})}]);
- assert.equal(elements.get('detail-price').textContent,'$38.000,5');
- assert.ok(elements.get('detail-action').innerHTML.includes('addToCart('+p.id+')'));
- context.snapshot([{id:String(p.id),data:()=>({price:0})}]);
- assert.equal(elements.get('detail-price').textContent,'Consultar precio');
- assert.ok(elements.get('detail-action').innerHTML.includes('https://wa.me/'));
- context.addToCart(p.id);
- assert.equal(vm.runInContext('cart.length',context),0);
+// Test actual runtime price/render functions, without connecting to Firebase.
+const priceCode = source.slice(source.indexOf('const parsePriceNumber ='), source.indexOf('function setFirestoreStatus'));
+const renderCode = source.slice(source.indexOf('window.renderProducts ='), source.indexOf('window.toggleMenu ='));
+for (const p of products) {
+  const priceNode = {textContent:''};
+  const actionNode = {dataset:{state:'inquiry'}, innerHTML:'original inquiry'};
+  const context = {products:[{...p}], document:{querySelectorAll(selector) { return selector.includes('data-product-price') ? [priceNode] : [actionNode]; }}};
+  context.window = context;
+  vm.createContext(context);
+  vm.runInContext(priceCode + '\n' + renderCode, context);
+  for (const [value, label, valid] of [[38000.5, '$38.000,5', true], ['45.000,50', '$45.000,5', true], [0, 'Consultar precio', false], ['0','Consultar precio',false], [-2,'Consultar precio',false], [null,'Consultar precio',false], ['no disponible','Consultar precio',false]]) {
+    context.products[0].price = value;
+    context.renderProducts();
+    assert.equal(priceNode.textContent, label, p.name);
+    assert.equal(actionNode.dataset.state, valid ? 'buy' : 'inquiry');
+    assert.ok(actionNode.innerHTML.includes(valid ? `addToCart(${p.id})` : 'https://wa.me/'), p.name);
+  }
 }
-for(const category of new Set(products.map(p=>p.category))) {
- context.document.body.dataset={category};
- elements.get('product-grid').children=[];
- context.renderProducts();
- assert.equal(elements.get('product-grid').children.length,products.filter(p=>p.category===category).length);
- context.snapshot([]);
- assert.ok(elements.get('product-grid').children.every(card=>!card.innerHTML.includes('onclick="addToCart')));
-}
-console.log('OK: 27 páginas, enlaces locales, 15 fichas con precios y WhatsApp, bloqueo de precio cero y categorías después de sincronizar.');
+for (const bad of ['http://example.com', 'https://example.com/path', 'https://user:pass@example.com', 'https://example.com/?test=1']) assert.throws(() => outputs(bad));
+const alternate = outputs('https://preview.example');
+assert.ok(alternate.get('sitemap.xml').includes('https://preview.example/productos/'));
+assert.ok(!alternate.get('index.html').includes('https://vitalcore.com.ar'));
+console.log(`OK: ${files.length} páginas, enlaces, WebP, metadatos, reproducción exacta y precios de ${products.length} productos.`);

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <base href="/">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://vitalcore.com.ar/categorias/quemadores.html">
+    <!-- legacy-route --><script>if (/^\/Vitalcore(?:\/|$)/.test(location.pathname)) location.replace("https://vitalcore.com.ar/categorias/quemadores.html" + location.search + location.hash);</script><!-- /legacy-route -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quemadores | VitalCore</title>
+    
+    <!-- METADATOS PARA REDES SOCIALES (SEO & Open Graph) -->
+    <meta name="description" content="Quemadores en VitalCore. Explorá los 1 productos y consultá sus precios.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Quemadores | VitalCore">
+    <meta property="og:description" content="Quemadores en VitalCore. Explorá los 1 productos y consultá sus precios.">
+    <meta property="og:image" content="logo.jpg">
+    <meta property="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="logo.jpg" type="image/jpg">
+
+    <link rel="stylesheet" href="assets/store.css">
+</head>
+<body class="text-slate-800 antialiased" data-category="Quemadores">
+    <a href="/categorias/quemadores.html#contenido" class="skip-link">Saltar al contenido</a>
+
+    <!-- Navbar -->
+    <nav class="bg-brand-dark/95 backdrop-blur-md text-white shadow-lg sticky top-0 z-40 transition-all duration-300 flex flex-col">
+        <!-- Ticker Promocional -->
+        <div class="bg-brand-accent text-brand-dark overflow-hidden py-1 relative z-40 border-b border-brand-dark/10">
+            <div class="flex animate-marquee-mobile md:animate-marquee whitespace-nowrap">
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-check-circle mr-1"></i> Asesoramiento Deportivo sin Cargo</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i> Precios actualizados</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-truck-fast mr-1"></i> Consultá opciones de entrega</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-check-circle mr-1"></i> Asesoramiento Deportivo sin Cargo</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i> Precios actualizados</span>
+                <span class="mx-8 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-truck-fast mr-1"></i> Consultá opciones de entrega</span>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 md:px-6 py-3 flex justify-between items-center w-full">
+            <!-- LOGO -->
+            <a href="/#" class="text-xl md:text-2xl font-display font-bold tracking-wider text-brand-primary flex items-center gap-3 z-40 relative">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white border-2 border-brand-primary overflow-hidden flex-shrink-0">
+                    <img src="logo.jpg" alt="Logo VitalCore" width="48" height="48" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.classList.add('flex', 'items-center', 'justify-center'); this.parentElement.innerHTML='<i class=\'fa-solid fa-bolt text-brand-dark\'></i>'">
+                </div>
+                <div>VITAL<span class="text-white">CORE</span></div>
+            </a>
+            
+            <!-- Menu Desktop -->
+            <div class="hidden lg:flex space-x-8 font-semibold text-sm uppercase tracking-wide items-center">
+                <a href="/#inicio" class="hover:text-brand-primary transition-colors py-2">Inicio</a>
+                <a href="/#catalogo" class="hover:text-brand-primary transition-colors py-2">Catálogo</a>
+                <a href="https://vitalcore-tienda.github.io/vitalcoretrainer/" class="hover:text-brand-primary transition-colors py-2">Entrenamiento</a>
+                <a href="/#beneficios" class="hover:text-brand-primary transition-colors py-2">Beneficios</a>
+                <a href="/#contacto" class="hover:text-brand-primary transition-colors py-2">Contacto</a>
+            </div>
+
+            <!-- Botones de Acción (Carrito y Menú Móvil) -->
+            <div class="flex items-center gap-3">
+                <button id="cart-open-btn" onclick="toggleCart()" aria-label="Abrir carrito de compras" aria-controls="cart-drawer" aria-expanded="false" class="relative bg-brand-primary/20 hover:bg-brand-primary text-brand-primary hover:text-brand-dark p-2.5 rounded-full transition-all duration-300 flex items-center justify-center">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-500 text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all scale-0">0</span>
+                </button>
+
+                <!-- Botón Menú Móvil -->
+                <button id="menu-toggle-btn" onclick="toggleMenu()" class="lg:hidden text-2xl text-brand-primary focus:outline-none p-2" aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false">
+                    <i id="menu-icon" class="fa-solid fa-bars transition-transform duration-300"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Movil -->
+        <div id="mobile-menu" aria-hidden="true" inert class="lg:hidden bg-brand-dark border-t border-brand-primary/20 absolute w-full left-0 top-full shadow-2xl menu-hidden overflow-hidden z-40">
+            <div class="flex flex-col p-6 space-y-4 font-semibold text-center uppercase tracking-wide">
+                <a href="/#inicio" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-brand-primary transition-colors">Inicio</a>
+                <a href="/#catalogo" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Catálogo</a>
+                <a href="https://vitalcore-tienda.github.io/vitalcoretrainer/" class="block py-3 text-white">Entrenamiento</a>
+                <a href="/#beneficios" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Beneficios</a>
+                <a href="/#contacto" onclick="toggleMenu()" class="block py-3 hover:bg-brand-primary/10 rounded-lg text-white transition-colors">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+<main id="contenido" tabindex="-1" class="bg-slate-50 py-12"><div class="container mx-auto px-4 md:px-6">
+            <nav aria-label="Ruta de navegación"><a href="/#catalogo" class="underline">Catálogo</a> / <span aria-current="page">Quemadores</span></nav>
+            <h1 class="text-4xl font-display mt-6">Quemadores</h1><p class="mt-3">Explorá 1 productos del catálogo. Compará presentaciones, abrí sus fichas y consultá precio y disponibilidad antes de comprar.</p>
+            <nav aria-label="Categorías" class="mt-6 flex flex-wrap justify-center gap-3"><a href="/#catalogo"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Todos</a><a href="categorias/proteinas.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Proteínas</a><a href="categorias/creatinas.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Creatinas</a><a href="categorias/aminoacidos.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Aminoácidos</a><a href="categorias/pre-entrenos.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Pre-Entrenos</a><a href="categorias/snacks.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Snacks</a><a href="categorias/quemadores.html" aria-current="page" class="bg-brand-dark text-white px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Quemadores</a><a href="categorias/minerales.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Minerales</a><a href="categorias/energizantes.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Energizantes</a></nav><nav aria-label="Marcas" class="mt-4 flex flex-wrap justify-center gap-3"><a href="marcas/star-nutrition.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Star Nutrition</a><a href="marcas/ena.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Ena</a><a href="marcas/gold-nutrition.html"  class="bg-white text-gray-700 px-5 py-2 rounded-full font-semibold text-sm border border-gray-200 hover:underline">Gold Nutrition</a></nav>
+            <div class="max-w-xl mx-auto my-6"><label for="catalog-search" class="block font-bold mb-2">Buscar en esta selección</label><input id="catalog-search" type="search" placeholder="Nombre, marca o categoría" class="w-full border border-gray-300 rounded-lg p-3"><p id="search-status" role="status" class="text-sm mt-2"></p></div>
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8"><article data-catalog-product="10" data-search="Hydroxy Max Night x 120 tabs Ena Quemadores" class="bg-white rounded-xl border p-5 flex flex-col gap-3"><a href="productos/ena-hydroxy-max-night-x-120-tabs.html"><img src="assets/images/product-10-1.webp" alt="Hydroxy Max Night x 120 tabs — Frente" width="640" height="640" loading="lazy" decoding="async" class="product-image w-full h-64 rounded-xl"><h3 class="font-display text-xl underline mt-3">Hydroxy Max Night x 120 tabs</h3></a><a href="categorias/quemadores.html" class="text-sm underline">Quemadores</a><a href="marcas/ena.html" class="text-sm text-gray-600 underline">Ena</a><p class="text-sm">Hydroxy Max Night de ENA en presentación de 120 tabletas, tal como figura en nuestro catálogo. Consultá disponibilidad y detalles del envase antes de comprar.</p><p data-product-price="10" class="font-bold mt-auto" aria-live="polite">Consultar precio</p><div data-product-action="10" data-state="inquiry"><a data-product-id="10" data-consultation-source="catalog" href="https://wa.me/5491165846235?text=Hola%2C%20quisiera%20consultar%20el%20precio%20de%20Hydroxy%20Max%20Night%20x%20120%20tabs%20(Ena)." target="_blank" rel="noopener noreferrer" class="block text-center bg-brand-dark text-white font-bold px-4 py-3 rounded-lg">Consultar por WhatsApp</a></div><a href="productos/ena-hydroxy-max-night-x-120-tabs.html" class="underline text-sm">Ver ficha y opciones</a></article></div></div></main>
+    <!-- Beneficios -->
+    <section id="beneficios" class="py-12 md:py-16 bg-white">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 text-center">
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-certificate"></i></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Calidad Garantizada</h3>
+                    <p class="text-sm md:text-base text-gray-600">Productos originales y certificados directos de los distribuidores oficiales.</p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-truck-fast"></i></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Envíos Rápidos</h3>
+                    <p class="text-sm md:text-base text-gray-600">Despachamos tu pedido rápidamente para que no frenes tu ritmo de entrenamiento.</p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-100 shadow-sm bg-white">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl"><i class="fa-solid fa-tag"></i></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 font-display">Mejores Precios</h3>
+                    <p class="text-sm md:text-base text-gray-600">Precios competitivos y ofertas exclusivas en suplementación de primera línea.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Asesoramiento -->
+    <section class="py-12 md:py-16 bg-brand-primary relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white opacity-10 rounded-full pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-brand-dark opacity-10 rounded-full pointer-events-none"></div>
+        <div class="container mx-auto px-4 md:px-6 text-center relative z-10">
+            <h2 class="text-2xl md:text-4xl font-display font-bold text-brand-dark mb-3">¿NECESITÁS ASESORAMIENTO PERSONALIZADO?</h2>
+            <p class="text-brand-dark/80 text-base md:text-lg mb-8 font-medium px-4">¿No sabés qué suplemento elegir según tus objetivos? Te ayudamos sin cargo.</p>
+            <a href="https://wa.me/5491165846235?text=Hola!%20Visité%20la%20página%20web%20de%20VitalCore%20y%20quisiera%20asesoramiento%20personalizado." target="_blank" rel="noopener noreferrer" class="btn-energy w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-brand-dark text-white font-bold py-4 md:py-3 px-8 rounded-full transition-all">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Hablar con un Asesor
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="bg-brand-dark text-white py-10 md:py-12 border-t border-brand-primary/20 pb-24 md:pb-12">
+        <div class="container mx-auto px-6 pb-8 text-center"><h2 class="text-xl font-bold mb-3">Entrenamiento y suplementos en un mismo lugar</h2><p class="mb-3">Conocé las propuestas de entrenamiento personalizado de VitalCore Trainer.</p><a href="https://vitalcore-tienda.github.io/vitalcoretrainer/" class="underline font-bold">Explorar planes de entrenamiento</a></div>
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6">
+                <div>
+                    <a href="/#" class="text-2xl font-display font-bold tracking-wider text-brand-primary block mb-2 flex items-center justify-center md:justify-start gap-2">VITAL<span class="text-white">CORE</span></a>
+                    <p class="text-gray-400 text-sm">Tu tienda de confianza en suplementación deportiva.</p>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="https://www.instagram.com/_vitalcore?igsh=cXpwZjZqeGVmY3hy" target="_blank" rel="noopener noreferrer" aria-label="Instagram VitalCore" class="text-gray-400 hover:text-brand-primary transition-colors text-2xl"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://wa.me/5491165846235" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp VitalCore" class="text-gray-400 hover:text-brand-primary transition-colors text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-xs md:text-sm">
+                <span id="secret-trigger" onclick="openAdminModal()" class="cursor-pointer select-none hover:text-gray-300 transition-colors">
+                    &copy; 2026 VitalCore. Todos los derechos reservados.
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DRAWER DEL CARRITO DE COMPRAS -->
+    <div id="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true" class="fixed inset-0 z-50 hidden transition-all duration-300">
+        <div class="cart-overlay absolute inset-0" aria-hidden="true" onclick="toggleCart(false)"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col justify-between transform transition-transform duration-300 z-50">
+            <!-- Header del Carrito -->
+            <div class="bg-brand-dark text-white p-5 flex justify-between items-center border-b border-brand-primary/20">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-cart-shopping text-xl text-brand-primary"></i>
+                    <h3 id="cart-title" class="text-xl font-bold font-display">Tu Carrito de Compras</h3>
+                </div>
+                <button id="cart-close-btn" onclick="toggleCart(false)" class="text-gray-300 hover:text-white p-2 rounded-full transition-colors" aria-label="Cerrar carrito">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Lista de Productos -->
+            <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50">
+                <div class="text-center py-12 text-gray-400 flex flex-col items-center gap-3">
+                    <i class="fa-solid fa-basket-shopping text-5xl text-gray-300"></i>
+                    <p class="font-medium text-sm">Tu carrito está vacío</p>
+                </div>
+            </div>
+
+            <!-- Footer con Totales y Checkout -->
+            <div class="p-5 bg-white border-t border-gray-200 space-y-4">
+                <div class="flex justify-between items-center text-lg font-bold text-gray-800">
+                    <span>Total Estimado:</span>
+                    <span id="cart-total" class="font-display text-2xl text-brand-dark">$0</span>
+                </div>
+                <button id="checkout-btn" onclick="checkoutOrder()" disabled class="w-full bg-[#25D366] hover:bg-[#1EBE57] disabled:bg-gray-300 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm uppercase tracking-wide">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Finalizar Pedido por WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <div class="fixed bottom-6 right-4 md:right-6 z-30 flex items-center group">
+        <span class="hidden md:inline-block mr-3 bg-brand-dark text-white text-xs font-bold py-2 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+            ¿Consultas rápidas? ¡Escribinos! 💬
+        </span>
+        <a href="https://wa.me/5491165846235?text=Hola!%20Visité%20la%20página%20web%20de%20VitalCore%20y%20quisiera%20consultar%20por%20sus%20productos." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           aria-label="Contactar por WhatsApp"
+           class="bg-[#25D366] text-white rounded-full p-0 shadow-2xl hover:bg-[#1EBE57] transition-all duration-300 animate-pulse-subtle flex items-center justify-center w-14 h-14 md:w-16 md:h-16 transform hover:scale-110">
+            <i class="fa-brands fa-whatsapp text-3xl md:text-4xl"></i>
+        </a>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" role="status" aria-live="polite" aria-atomic="true" class="fixed top-20 left-1/2 transform -translate-x-1/2 md:top-auto md:bottom-24 md:left-auto md:right-6 md:translate-x-0 w-[90%] md:w-auto bg-brand-dark text-white px-6 py-4 rounded-lg shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-3 border border-brand-primary/20">
+        <i class="fa-solid fa-circle-check text-brand-primary text-xl"></i>
+        <span id="toast-text" class="text-sm font-medium">¡Producto agregado al carrito!</span>
+    </div>
+
+    <!-- ADMIN MODAL -->
+    <div id="admin-modal" role="dialog" aria-modal="true" aria-labelledby="admin-login-title" aria-hidden="true" class="fixed inset-0 admin-modal-bg z-50 hidden flex items-center justify-center p-4">
+        <!-- LOGIN -->
+        <div id="admin-login" class="bg-white rounded-xl shadow-2xl w-full max-w-md p-8 transform transition-all">
+            <div class="text-center mb-6">
+                <i class="fa-solid fa-user-shield text-4xl text-brand-dark mb-2"></i>
+                <h2 id="admin-login-title" class="text-2xl font-bold text-brand-dark font-display">Acceso Administrativo</h2>
+                <p class="text-gray-500 text-sm">Ingrese contraseña para continuar</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label for="admin-password" class="sr-only">Contraseña administrativa</label>
+                    <input type="password" id="admin-password" placeholder="Contraseña" autocomplete="current-password" aria-describedby="login-error" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition-all" onkeypress="handleEnter(event)">
+                    <p id="login-error" role="alert" class="text-red-500 text-xs mt-2 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> Contraseña incorrecta</p>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="closeAdmin()" class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors">Cancelar</button>
+                    <button onclick="checkAdmin()" class="flex-1 px-4 py-3 bg-brand-dark text-white font-bold rounded-lg hover:bg-brand-primary transition-colors">Entrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="admin-dashboard" class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col hidden overflow-hidden">
+            <div class="bg-brand-dark text-white p-5 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-chart-line text-xl text-brand-primary"></i>
+                    <h2 id="admin-dashboard-title" class="text-xl font-bold font-display">Panel de Control & Estadísticas</h2>
+                </div>
+                <button onclick="closeAdmin()" aria-label="Cerrar panel administrativo" class="text-gray-300 hover:text-white hover:bg-white/10 p-2 rounded-full transition-all w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <!-- Tabs del Admin -->
+            <div role="tablist" aria-label="Secciones del panel administrativo" class="flex border-b border-gray-200 bg-gray-100">
+                <button id="tab-btn-prices" role="tab" aria-selected="true" aria-controls="tab-content-prices" onclick="switchAdminTab('prices')" class="flex-1 py-3 px-4 font-bold text-sm text-brand-dark border-b-2 border-brand-primary bg-white flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-pen-to-square"></i> Precios
+                </button>
+                <button id="tab-btn-stats" role="tab" aria-selected="false" aria-controls="tab-content-stats" onclick="switchAdminTab('stats')" class="flex-1 py-3 px-4 font-bold text-sm text-gray-500 hover:text-brand-dark flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-fire text-orange-500"></i> Consultas y carritos
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 bg-slate-50">
+                <!-- TAB PRECIOS -->
+                <div id="tab-content-prices" role="tabpanel" aria-labelledby="tab-btn-prices" class="grid gap-4"></div>
+
+                <!-- TAB ESTADÍSTICAS -->
+                <div id="tab-content-stats" role="tabpanel" aria-labelledby="tab-btn-stats" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 class="text-lg font-bold text-brand-dark font-display mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-amber-500"></i> Interés en productos
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-6">Muestra unidades incluidas en carritos abiertos por WhatsApp. No confirma mensajes enviados ni ventas.</p>
+                        
+                        <section id="inquiry-report" class="bg-white p-4 rounded-lg border mb-5" aria-live="polite"></section>
+                        <div id="stats-ranking-list" class="space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-gray-200 bg-white flex justify-between items-center text-xs text-gray-500">
+                <span id="firestore-status" role="status" class="flex items-center gap-1 text-amber-600 font-semibold"><i class="fa-solid fa-spinner fa-spin"></i> Conectando con Firestore...</span>
+                <button onclick="closeAdmin()" class="px-6 py-2 bg-brand-dark text-white rounded-lg font-bold hover:bg-brand-primary transition-colors">Finalizar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIBRERÍAS EXTERNAS -->
+
+    <script defer src="metrics.js"></script>
+    <script type="module" src="store.js"></script>
+</body>
+</html>

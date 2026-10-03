@@ -1,0 +1,51 @@
+.guide-document{scroll-padding-top:1rem}
+.supplement-guide{background:#f6f8f5;color:#22382f;overflow-x:visible}
+.guide-header{background:#1a4e40;color:#fff;padding:1rem max(1rem,calc((100% - 72rem)/2));display:flex;align-items:center;justify-content:space-between;gap:1.25rem;flex-wrap:wrap}
+.guide-brand{display:flex;align-items:center;gap:.3rem;font-size:1.5rem;font-weight:800;color:#b9e2a7}
+.guide-brand img{width:48px;height:48px;border-radius:50%;margin-right:.5rem;object-fit:cover}
+.guide-brand span{color:#fff}
+.guide-header nav,.guide-footer nav{display:flex;gap:1.25rem;flex-wrap:wrap;align-items:center}
+.guide-header nav a{font-weight:700}
+.guide-header a:hover,.guide-footer a:hover{text-decoration:underline}
+.guide-main{max-width:54rem;margin:0 auto;padding:2rem 1.25rem 3rem}
+.guide-breadcrumb{font-size:.9rem;color:#54665d;line-height:1.8}
+.guide-breadcrumb a{text-decoration:underline}
+.guide-intro{margin:2rem 0}
+.guide-eyebrow{color:#356348;font-size:.8rem;font-weight:800;letter-spacing:.13em;margin-bottom:.75rem}
+.guide-intro h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.15;font-weight:800;letter-spacing:-.025em;color:#1a4e40;max-width:23ch}
+.guide-summary{font-size:1.2rem;line-height:1.7;margin:1.25rem 0;max-width:55ch}
+.guide-date{font-size:.9rem;line-height:1.65;color:#54665d}
+.guide-toc{background:#e9f2e7;padding:1.5rem;border:1px solid #c9dcca;border-radius:1rem;margin:2rem 0}
+.guide-toc h2{font-size:1.1rem;font-weight:800;margin-bottom:.75rem}
+.guide-toc ol{list-style:decimal;padding-left:1.5rem;line-height:1.7}
+.guide-toc li+li{margin-top:.4rem}
+.guide-toc a{text-decoration:underline;text-underline-offset:3px}
+.guide-body{font-size:1.0625rem;line-height:1.85;overflow-wrap:anywhere}
+.guide-body p{margin:1.1rem 0}
+.guide-body h2{font-size:1.65rem;font-weight:800;line-height:1.3;margin:2.6rem 0 1rem;color:#1a4e40;scroll-margin-top:1rem}
+.guide-body a,.guide-related a{color:#205b3d;text-decoration:underline;text-underline-offset:3px}
+.guide-body ul,.guide-body ol{padding-left:1.5rem;margin:1.25rem 0;list-style:disc}
+.guide-body ol{list-style:decimal}
+.guide-body li+li{margin-top:.5rem}
+.guide-table{max-width:100%;overflow-x:auto;margin:1.5rem 0;border:1px solid #c9dcca;border-radius:.75rem}
+.guide-table table{width:100%;text-align:left;background:#fff}
+.guide-table th,.guide-table td{padding:.8rem 1rem;border-bottom:1px solid #dce5da;vertical-align:top}
+.guide-table th{background:#e9f2e7;font-weight:800}
+.guide-body .guide-contact{display:inline-block;background:#1a4e40;color:white;border-radius:.65rem;padding:.7rem 1rem;margin:.4rem 0;font-weight:700}
+.guide-contact:hover{background:#24634f}
+.guide-related{margin-top:3rem;padding:1.5rem;background:#fff;border:1px solid #c9dcca;border-radius:1rem;line-height:1.7}
+.guide-related h2{font-size:1.25rem;font-weight:800;margin-bottom:.6rem}
+.guide-related p+p{margin-top:.5rem}
+.guide-footer{padding:2rem max(1.25rem,calc((100% - 72rem)/2));background:#1a4e40;color:#fff;line-height:1.7}
+.guide-footer p{margin-top:1rem;font-size:.9rem}
+.supplement-hub{padding:3rem 0;background:#edf4e9;color:#22382f}
+.supplement-hub h2{font-size:2rem;line-height:1.25;font-weight:800;color:#1a4e40;margin-bottom:1rem}
+.supplement-hub>.container>p{max-width:62ch;line-height:1.75}
+.supplement-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;margin-top:1.5rem}
+.supplement-card,.supplement-callout{background:#fff;border:1px solid #c9dcca;border-radius:1rem;padding:1.5rem;line-height:1.75}
+.supplement-card h3,.supplement-callout h2{color:#1a4e40;font-size:1.35rem;font-weight:800;line-height:1.35;margin-bottom:.7rem}
+.supplement-card p,.supplement-callout p{margin-bottom:.75rem}
+.supplement-card>a,.supplement-callout>a{font-weight:800;color:#205b3d;text-decoration:underline;text-underline-offset:3px}
+.supplement-card h3 a:hover{text-decoration:underline}
+.supplement-callout{margin-top:1.5rem;background:#edf4e9;max-width:60rem}
+@media(max-width:600px){.guide-header{gap:1rem}.guide-header nav{gap:1rem;font-size:.9rem}.guide-main{padding-top:1.5rem}.guide-intro{margin-top:1.5rem}.guide-toc{padding:1.25rem}.guide-body h2{font-size:1.45rem}.supplement-cards{grid-template-columns:1fr}.guide-table th,.guide-table td{padding:.6rem .65rem}}

@@ -17,6 +17,13 @@ imágenes e identificadores `data-product-*`. No copiar precios: los precios
 siguen viniendo de Firestore y el HTML inicial ofrece consultar por WhatsApp.
 Las páginas de categorías y marcas también se mantienen en `templates/`.
 
+Las guías editoriales se mantienen en `templates/guias/` y usan
+`assets/guides.css` junto con la hoja de la tienda. No cargan el carrito ni
+Firebase: sus enlaces conducen al catálogo y a WhatsApp. Al editar una guía,
+conservar sus fuentes, fecha de revisión y metadatos; actualizar los enlaces de
+portada y categoría cuando corresponda. El generador incluye estas páginas en
+el sitemap y la verificación comprueba también sus datos estructurados y secciones.
+
 El sitemap se deriva automáticamente de las plantillas. Las rutas de compatibilidad
 `Vitalcore/` se generan con redirección de navegador; no reemplazan las
 redirecciones HTTP del alojamiento. No se eliminan rutas antiguas automáticamente:

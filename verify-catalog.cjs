@@ -17,10 +17,24 @@ assert.equal(files.filter(f => f.startsWith('productos/')).length, products.leng
 for (const p of products) assert.ok(files.includes(productPath(p)), `Falta ficha para ${p.name}`);
 for (const file of files) {
   const html = expected.get(file);
+  const editorial = file.startsWith('guias/');
   assert.equal((html.match(/<h1\b/g) || []).length, 1, file);
   assert.equal((html.match(/rel="canonical"/g) || []).length, 1, file);
   assert.equal((html.match(/name="robots" content="index, follow"/g) || []).length, 1, file);
-  assert.ok(html.includes('assets/store.css') && html.includes('metrics.js') && html.includes('store.js'), file);
+  assert.ok(html.includes('assets/store.css'), file);
+  if (editorial) {
+    assert.ok(html.includes('assets/guides.css'), file);
+    assert.ok(!html.includes('src="store.js"') && !html.includes('src="metrics.js"'), `${file}: la guía no necesita el runtime del catálogo`);
+    assert.ok(!/BORRADOR EDITORIAL|NOTAS PARA PUBLICACIÓN/.test(html), file);
+    const schema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    const article = schema['@graph'].find(item => item['@type'] === 'Article');
+    assert.equal(article.url, new URL('/' + file, process.env.SITE_ORIGIN || 'https://vitalcore.com.ar').href);
+    assert.equal(article.mainEntityOfPage, article.url);
+    assert.ok(html.includes(`<meta property="og:url" content="${article.url}">`), file);
+    for (const [, fragment] of html.matchAll(/href="\/guias\/[^"#]+#([^"]+)"/g)) assert.ok(html.includes(`id="${fragment}"`), `${file}: sección inexistente ${fragment}`);
+  } else {
+    assert.ok(html.includes('metrics.js') && html.includes('store.js'), file);
+  }
   assert.ok(!html.includes('cdn.tailwindcss.com'), file);
   for (const [, url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     if (/^(https?:|data:|mailto:|tel:|#)/.test(url)) continue;
@@ -32,7 +46,7 @@ for (const file of files) {
   assert.deepEqual(prices, actions, `${file}: precios sin botón correspondiente`);
   for (const id of prices) assert.ok(ids.has(id), `${file}: producto desconocido ${id}`);
   for (const [, image] of html.matchAll(/src="([^"]*product-[^"]+)"/g)) assert.ok(image.endsWith('.webp'), image);
-  if (!file.startsWith('productos/')) assert.ok(html.includes('id="catalog-search"'), file);
+  if (!editorial && !file.startsWith('productos/')) assert.ok(html.includes('id="catalog-search"'), file);
   if (file.startsWith('productos/')) {
     const p = products.find(p => productPath(p) === file);
     assert.ok(html.includes(`data-product-price="${p.id}"`) && html.includes(`data-product-action="${p.id}"`), file);

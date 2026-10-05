@@ -24,11 +24,11 @@ for (const file of files) {
   assert.equal((html.match(new RegExp('name="robots" content="' + (privacy ? 'noindex' : 'index') + ', follow"', 'g')) || []).length, 1, file);
   assert.ok(html.includes('assets/store.css'), file);
   if (privacy) {
-    assert.ok(!/src="(?:store|metrics)\.js"|assets\/measurement(?:-config|-pages)?\.js|data-measurement-preferences/.test(html), `${file}: privacidad no carga Firebase ni Analytics`);
+    assert.ok(!/src="(?:store|metrics)\.js(?:[?#][^"]*)?"|assets\/measurement(?:-config|-pages)?\.js|data-measurement-preferences/.test(html), `${file}: privacidad no carga Firebase ni Analytics`);
     assert.ok(!expected.get('sitemap.xml').includes('/privacidad.html'), 'Privacidad fuera del sitemap');
   } else if (editorial) {
     assert.ok(html.includes('assets/guides.css'), file);
-    assert.ok(!html.includes('src="store.js"') && !html.includes('src="metrics.js"'), `${file}: la guía no necesita el runtime del catálogo`);
+    assert.ok(!/src="(?:store|metrics)\.js(?:[?#][^"]*)?"/.test(html), `${file}: la guía no necesita el runtime del catálogo`);
     assert.ok(!/BORRADOR EDITORIAL|NOTAS PARA PUBLICACIÓN/.test(html), file);
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
     const article = schema['@graph'].find(item => item['@type'] === 'Article');
@@ -38,10 +38,16 @@ for (const file of files) {
     for (const [, fragment] of html.matchAll(/href="\/guias\/[^"#]+#([^"]+)"/g)) assert.ok(html.includes(`id="${fragment}"`), `${file}: sección inexistente ${fragment}`);
   } else {
     assert.ok(html.includes('metrics.js') && html.includes('store.js'), file);
+    assert.equal((html.match(/src="metrics\.js(?:[?#][^"]*)?"/g) || []).length, 1, file);
+    assert.ok(html.includes('src="metrics.js?v=20261005"'), `${file}: versión del contador`);
   }
   if (!privacy) {
-    for (const script of ['measurement-config', 'measurement-pages', 'measurement']) assert.equal((html.match(new RegExp(`src="assets/${script}\\.js"`, 'g')) || []).length, 1, file);
-    assert.ok(html.includes('assets/measurement.css'), file);
+    for (const script of ['measurement-config', 'measurement-pages', 'measurement']) {
+      assert.equal((html.match(new RegExp(`src="assets/${script}\\.js(?:[?#][^"]*)?"`, 'g')) || []).length, 1, file);
+      assert.ok(html.includes(`src="assets/${script}.js?v=20261005"`), `${file}: versión de ${script}`);
+    }
+    assert.equal((html.match(/href="assets\/measurement\.css(?:[?#][^"]*)?"/g) || []).length, 1, file);
+    assert.ok(html.includes('href="assets/measurement.css?v=20261005"'), `${file}: versión de la hoja de medición`);
     assert.equal((html.match(/data-measurement-preferences/g) || []).length, 1, file);
     assert.ok(html.includes('<button hidden type="button" class="vc-measurement-preferences" data-measurement-preferences'), file);
     assert.ok(html.includes('href="/privacidad.html"'), file);

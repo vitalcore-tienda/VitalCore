@@ -55,3 +55,8 @@ y se mide una vez como intención de contacto, sin datos del carrito. La capa
 follow` y fuera del sitemap. Mantener los scripts, la hoja de consentimiento y
 el control de preferencias en las fuentes públicas para que una regeneración
 no borre la integración. Verificar también `node --test tests/*.test.cjs`.
+
+Los recursos de medición y `metrics.js` se enlazan con `?v=20261005` para evitar
+versiones antiguas o respuestas 404 conservadas en la caché. Al modificar estos
+scripts o estilos, incrementar la versión en sus referencias públicas de
+`templates/`, actualizar su comprobación en el verificador y regenerar las páginas.

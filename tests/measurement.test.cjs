@@ -228,8 +228,28 @@ test('el mapa público coincide con las 29 plantillas y no admite privacidad, tr
   assert.equal(harness({url:base + '/index.html', choice:'accepted'}).events()[0][1].page_location, base + '/');
   assert.ok(!expected.get('sitemap.xml').includes('/privacidad.html'));
   assert.match(expected.get('privacidad.html'), /noindex, follow/);
-  assert.doesNotMatch(expected.get('privacidad.html'), /assets\/measurement|src="(?:metrics|store)\.js"/);
+  assert.doesNotMatch(expected.get('privacidad.html'), /assets\/measurement|src="(?:metrics|store)\.js(?:[?#][^"]*)?"/);
   assert.doesNotMatch(expected.get('Vitalcore/guias/creatina-monohidratada.html'), /measurement/);
+});
+
+test('las URLs de recursos nuevas evitan la caché anterior y resuelven a archivos locales únicos', () => {
+  const {outputs, templateFiles} = require('../build-pages.cjs');
+  const generated = outputs();
+  const measuredAssets = ['/assets/measurement.css','/assets/measurement-config.js','/assets/measurement-pages.js','/assets/measurement.js'];
+  for (const file of templateFiles().filter(file => file !== 'privacidad.html')) {
+    const html = generated.get(file);
+    const resources = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map(([, value]) => new URL(value, base + '/'));
+    const required = file.startsWith('guias/') ? measuredAssets : [...measuredAssets, '/metrics.js'];
+    for (const asset of required) {
+      const matches = resources.filter(url => url.origin === base && url.pathname === asset);
+      assert.equal(matches.length, 1, `${file}: recurso único ${asset}`);
+      const [url] = matches;
+      assert.equal(url.searchParams.get('v'), '20261005', `${file}: evitar caché antigua de ${asset}`);
+      assert.equal(url.searchParams.size, 1);
+      assert.equal(url.hash, '');
+      assert.ok(fs.existsSync(path.join(root, url.pathname.slice(1))), `${file}: resolución local sin query de ${url.href}`);
+    }
+  }
 });
 
 test('los CTAs públicos de la portada y las secciones se identifican como contenido', () => {

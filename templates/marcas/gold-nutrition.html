@@ -20,6 +20,10 @@
     <link rel="icon" href="logo.jpg" type="image/jpg">
 
     <link rel="stylesheet" href="assets/store.css">
+    <link rel="stylesheet" href="assets/measurement.css">
+    <script defer src="assets/measurement-config.js"></script>
+    <script defer src="assets/measurement-pages.js"></script>
+    <script defer src="assets/measurement.js"></script>
 </head>
 <body class="text-slate-800 antialiased" data-brand="Gold Nutrition">
     <a href="/marcas/gold-nutrition.html#contenido" class="skip-link">Saltar al contenido</a>
@@ -144,6 +148,7 @@
                 </span>
             </div>
         </div>
+            <div class="vc-measurement-footer"><a href="/privacidad.html">Medición y privacidad</a><button hidden type="button" class="vc-measurement-preferences" data-measurement-preferences>Preferencias de Analytics</button></div>
     </footer>
 
     <!-- DRAWER DEL CARRITO DE COMPRAS -->
@@ -183,7 +188,7 @@
     </div>
 
     <!-- Botón Flotante de WhatsApp -->
-    <div class="fixed bottom-6 right-4 md:right-6 z-30 flex items-center group">
+    <div data-measurement-location="floating" class="fixed bottom-6 right-4 md:right-6 z-30 flex items-center group">
         <span class="hidden md:inline-block mr-3 bg-brand-dark text-white text-xs font-bold py-2 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
             ¿Consultas rápidas? ¡Escribinos! 💬
         </span>

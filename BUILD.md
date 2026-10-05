@@ -35,3 +35,23 @@ valor; no se debe publicar una compilación de prueba en el dominio real.
 Las pruebas verifican enlaces y recursos locales, metadatos, consistencia de
 identificadores, precios válidos e inválidos y reproducción exacta de las fuentes.
 No conectan con Firestore ni envían mensajes o pedidos.
+
+La medición opcional de GA4 se mantiene en `assets/measurement.js`, con el ID
+del flujo en `assets/measurement-config.js`. Antes de activar un ID, desactivar
+todos los eventos de Medición mejorada en ese flujo: las visitas y los clics de
+esta implementación se envían manualmente y sin parámetros del enlace a WhatsApp.
+El generador deriva `assets/measurement-pages.js` de las plantillas públicas:
+es la lista cerrada de rutas, títulos e identificadores permitidos para Analytics.
+Al agregar una nueva clase de página, clasificarla explícitamente en el generador.
+
+Las preferencias de Analytics son independientes del contador existente de
+Firebase en `metrics.js`. Los enlaces usan una sola escucha de clics para GA4.
+El checkout que abre WhatsApp mediante código emite `vitalcore:consultation`
+después de abrir la ventana; ese aviso lleva únicamente `kind:checkoutClicks`,
+y se mide una vez como intención de contacto, sin datos del carrito. La capa
+`vitalcoreAnalyticsLayer` está separada del `dataLayer` preexistente del contador.
+
+`templates/privacidad.html` se genera sin Analytics ni Firebase, con `noindex,
+follow` y fuera del sitemap. Mantener los scripts, la hoja de consentimiento y
+el control de preferencias en las fuentes públicas para que una regeneración
+no borre la integración. Verificar también `node --test tests/*.test.cjs`.

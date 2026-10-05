@@ -18,11 +18,15 @@ for (const p of products) assert.ok(files.includes(productPath(p)), `Falta ficha
 for (const file of files) {
   const html = expected.get(file);
   const editorial = file.startsWith('guias/');
+  const privacy = file === 'privacidad.html';
   assert.equal((html.match(/<h1\b/g) || []).length, 1, file);
   assert.equal((html.match(/rel="canonical"/g) || []).length, 1, file);
-  assert.equal((html.match(/name="robots" content="index, follow"/g) || []).length, 1, file);
+  assert.equal((html.match(new RegExp('name="robots" content="' + (privacy ? 'noindex' : 'index') + ', follow"', 'g')) || []).length, 1, file);
   assert.ok(html.includes('assets/store.css'), file);
-  if (editorial) {
+  if (privacy) {
+    assert.ok(!/src="(?:store|metrics)\.js"|assets\/measurement(?:-config|-pages)?\.js|data-measurement-preferences/.test(html), `${file}: privacidad no carga Firebase ni Analytics`);
+    assert.ok(!expected.get('sitemap.xml').includes('/privacidad.html'), 'Privacidad fuera del sitemap');
+  } else if (editorial) {
     assert.ok(html.includes('assets/guides.css'), file);
     assert.ok(!html.includes('src="store.js"') && !html.includes('src="metrics.js"'), `${file}: la guía no necesita el runtime del catálogo`);
     assert.ok(!/BORRADOR EDITORIAL|NOTAS PARA PUBLICACIÓN/.test(html), file);
@@ -35,6 +39,13 @@ for (const file of files) {
   } else {
     assert.ok(html.includes('metrics.js') && html.includes('store.js'), file);
   }
+  if (!privacy) {
+    for (const script of ['measurement-config', 'measurement-pages', 'measurement']) assert.equal((html.match(new RegExp(`src="assets/${script}\\.js"`, 'g')) || []).length, 1, file);
+    assert.ok(html.includes('assets/measurement.css'), file);
+    assert.equal((html.match(/data-measurement-preferences/g) || []).length, 1, file);
+    assert.ok(html.includes('<button hidden type="button" class="vc-measurement-preferences" data-measurement-preferences'), file);
+    assert.ok(html.includes('href="/privacidad.html"'), file);
+  }
   assert.ok(!html.includes('cdn.tailwindcss.com'), file);
   for (const [, url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     if (/^(https?:|data:|mailto:|tel:|#)/.test(url)) continue;
@@ -46,7 +57,7 @@ for (const file of files) {
   assert.deepEqual(prices, actions, `${file}: precios sin botón correspondiente`);
   for (const id of prices) assert.ok(ids.has(id), `${file}: producto desconocido ${id}`);
   for (const [, image] of html.matchAll(/src="([^"]*product-[^"]+)"/g)) assert.ok(image.endsWith('.webp'), image);
-  if (!editorial && !file.startsWith('productos/')) assert.ok(html.includes('id="catalog-search"'), file);
+  if (!editorial && !privacy && !file.startsWith('productos/')) assert.ok(html.includes('id="catalog-search"'), file);
   if (file.startsWith('productos/')) {
     const p = products.find(p => productPath(p) === file);
     assert.ok(html.includes(`data-product-price="${p.id}"`) && html.includes(`data-product-action="${p.id}"`), file);

@@ -34,6 +34,8 @@
         // Optional analytics adapter; no Google script or identifier is loaded here.
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({event:'whatsapp_click', product_id:String(productId), source, page_path:location.pathname});
+        // Notify only a successful programmatic checkout; normal links are measured separately.
+        if (kind === 'checkoutClicks') window.dispatchEvent(new CustomEvent('vitalcore:consultation', {detail:{kind:'checkoutClicks'}}));
         flush();
     };
     document.addEventListener('click', event => {

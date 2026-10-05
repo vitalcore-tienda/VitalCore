@@ -17,13 +17,25 @@ function outputs(originValue = process.env.SITE_ORIGIN || DEFAULT_ORIGIN) {
   }
   const result = new Map();
   const urls = [];
+  const measurementPages = {};
   for (const file of templateFiles()) {
     const pathname = file === 'index.html' ? '/' : '/' + file;
     const target = new URL(pathname, origin).href;
     const html = fs.readFileSync(path.join(ROOT, 'templates', file), 'utf8').replaceAll(DEFAULT_ORIGIN, origin.origin);
     if (!html.includes(`<link rel="canonical" href="${target}">`)) throw new Error(`Canonical incorrecto: ${file}`);
     result.set(file, html);
-    urls.push(target);
+    if (file !== 'privacidad.html') {
+      urls.push(target);
+      const pageType = file === 'index.html' ? 'home' : ({categorias:'category', marcas:'brand', productos:'product', guias:'guide'})[file.split('/')[0]];
+      if (!pageType) throw new Error(`Clasificar la página pública para medición: ${file}`);
+      const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
+      if (!title) throw new Error(`Título público faltante: ${file}`);
+      measurementPages[pathname] = {
+        canonical: target, title, pageType,
+        slug: file === 'index.html' ? 'home' : file.split('/').pop().replace(/\.html$/, ''),
+        productId: pageType === 'product' ? html.match(/data-product-price="(\d+)"/)?.[1] || 'site' : 'site'
+      };
+    }
     result.set('Vitalcore/' + file, `<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,6 +47,8 @@ function outputs(originValue = process.env.SITE_ORIGIN || DEFAULT_ORIGIN) {
 `);
   }
   result.set('CNAME', origin.hostname + '\n');
+  // A closed allowlist from reviewed public templates, never browser input.
+  result.set('assets/measurement-pages.js', 'window.VITALCORE_STORE_PAGES = Object.freeze(' + JSON.stringify(measurementPages, null, 2) + ');\n');
   result.set('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${origin.origin}/sitemap.xml\n`);
   result.set('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls.map(url => `  <url><loc>${url}</loc></url>`).join('\n') + '\n</urlset>\n');
   return result;
